@@ -9,6 +9,8 @@ namespace StoreApplication.Library
     public class Customer 
     {
 
+        List<Order> customerOrders = new List<Order>();
+
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
@@ -76,14 +78,57 @@ namespace StoreApplication.Library
         public void DisplayCustomers(string jsonFilePath)
         {
             List<Customer> tempData = new List<Customer>();
-            tempData = DeserializeJsonFromFile(jsonFilePath);
-            Console.Clear();
-            Console.WriteLine("Customer      First Name      Last Name");
-            for (int i = 0; i < tempData.Count; i++)
+            if (File.Exists(jsonFilePath))
             {
-                Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
+                tempData = DeserializeJsonFromFile(jsonFilePath);
+
+                Console.Clear();
+                Console.WriteLine("Customer      First Name      Last Name");
+                for (int i = 0; i < tempData.Count; i++)
+                {
+                    Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
+                }
+                Console.ReadKey();
             }
-            Console.ReadKey();
+            else
+            {
+                Console.WriteLine("No Data Present\nPress Any Key To Continue");
+                Console.ReadKey();
+            }
+        }
+
+        public void SearchByName(string jsonFilePath)
+        {
+            List<Customer> tempData = new List<Customer>();
+            string searchName;
+            Console.Clear();
+            Console.WriteLine("Please Enter a First or a Last Name To Search");
+            searchName = Console.ReadLine();
+
+            if (File.Exists(jsonFilePath))
+            {
+                int searchCount = 0;
+                tempData = DeserializeJsonFromFile(jsonFilePath);
+                Console.WriteLine("Customer      First Name      Last Name");
+                for (int i = 0; i < tempData.Count; i++)
+                {
+                    if (tempData[i].FirstName.Equals(searchName) || tempData[i].LastName.Equals(searchName))
+                    {
+                        Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);                        
+                    }
+                    else
+                    {
+                        searchCount++;
+                    }
+                }
+                if(searchCount == tempData.Count)
+                {
+                    Console.Clear();
+                    Console.WriteLine("No Such Record Present\nPress Any Key To Continue");
+                    Console.ReadKey();
+                }
+                Console.ReadKey();
+            }
         }
 
     }
