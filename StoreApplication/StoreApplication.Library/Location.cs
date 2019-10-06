@@ -10,9 +10,12 @@ namespace StoreApplication.Library
         public int Inventory { get; set; }
         public string City { get; set; }
 
+        public bool orderSelect { get; set; }
+
         //Decrease inventory when orders are accepted
 
         //If the order can't be fulfilled with the remaining inventory in the store, REJECT order
 
     }
+
 }

@@ -54,9 +54,9 @@ namespace StoreApplication.Library
                 Location tempLoc = new Location();
                 tempLoc.City = storeLocation;
                 tempLoc.Inventory = inventoryForLoc;
+                tempLoc.orderSelect = false;
                 product.location.Add(tempLoc);
             }
-            //Random ID Assignment
 
             Console.WriteLine("Added Product {0} of type {1} with ID {2} to {3} stores", product.ProductName, product.ProductType, product.Id, storeCount);
             List<Product> tempProduct = new List<Product>();
@@ -107,6 +107,7 @@ namespace StoreApplication.Library
                 {
                     Console.WriteLine(" {0}          {1}           {2}", i + 1, tempData[i].ProductName, tempData[i].Id);
                 }
+                Console.WriteLine("Press Any Key To Continue");
                 Console.ReadKey();
             }
             else

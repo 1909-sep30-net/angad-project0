@@ -47,6 +47,7 @@ namespace StoreApplication.Library
                     tempCustomer.Add(newCustomer);
                 }
                 SerializeJsonToFile(jsonFilePath, tempCustomer);
+                Console.WriteLine("Press Any Key To Continue: ");
                 Console.ReadKey();
             }
             else
@@ -88,6 +89,7 @@ namespace StoreApplication.Library
                 {
                     Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
                 }
+                Console.WriteLine("Press any key to continue");
                 Console.ReadKey();
             }
             else

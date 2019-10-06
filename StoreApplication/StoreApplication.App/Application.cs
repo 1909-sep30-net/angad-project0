@@ -9,6 +9,7 @@ namespace StoreApplication.App
 
         static string jsonFilePathCustomers = @"C:\revature\angad-project0\StoreApplication\JSONData\Customers.json";
         static string jsonFilePathProducts = @"C:\revature\angad-project0\StoreApplication\JSONData\Products.json";
+        static string jsonFilePathOrders = @"C:\revature\angad-project0\StoreApplication\JSONData\Orders.json";
 
         static void Main(string[] args)
         {
@@ -93,26 +94,32 @@ namespace StoreApplication.App
         static void StoreManagementMenu()
         {
             Product product = new Product();
+            Order order = new Order();
             int menuChoice = 0;
             do
             {
                 Console.Clear();
-                Console.WriteLine("1. View All Orders");
-                Console.WriteLine("2. Display Order by Index");
-                Console.WriteLine("3. Display Order History of a Store Location");
-                Console.WriteLine("4. Display Order History of a Customer");
-                Console.WriteLine("5. Add New Product");
-                Console.WriteLine("6. Display All Products");
+                Console.WriteLine("1. Create an Order");
+                Console.WriteLine("2. View All Orders");
+                Console.WriteLine("3. Display Order by Index");
+                Console.WriteLine("4. Display Order History of a Store Location");
+                Console.WriteLine("5. Display Order History of a Customer");
+                Console.WriteLine("6. Add New Product");
+                Console.WriteLine("7. Display All Products");
+                Console.WriteLine("8+. Go Back");
 
                 Console.WriteLine("Enter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
 
                 switch (menuChoice)
                 {
-                    case 5:
-                        product.AddProducts(jsonFilePathProducts);
+                    case 1:
+                        order.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts);
                         break;
                     case 6:
+                        product.AddProducts(jsonFilePathProducts);
+                        break;
+                    case 7:
                         product.DisplayProducts(jsonFilePathProducts);
                         break;
                 }
