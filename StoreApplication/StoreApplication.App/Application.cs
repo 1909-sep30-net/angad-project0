@@ -1,8 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using StoreApplication.Library;
 
-namespace StoreApplication.App {
-    class Application {
-        static void Main(string[] args) {
+namespace StoreApplication.App 
+{
+    class Application 
+    {
+
+        static string jsonFilePath = @"C:\revature\angad-project0\StoreApplication\JSONData\Customers.json";
+
+        static void Main(string[] args) 
+        {
 
             int userChoice = 0;
 
@@ -12,7 +20,8 @@ namespace StoreApplication.App {
 
         }
 
-        static void MainMenu(int choice) {
+        static void MainMenu(int choice) 
+        {
             Console.Clear();
 
             Console.WriteLine("The Video Game Store\n");
@@ -24,7 +33,8 @@ namespace StoreApplication.App {
             Console.WriteLine("Please Enter Your Choice: ");
             choice = Int32.Parse(Console.ReadLine());
 
-            switch (choice) {
+            switch (choice) 
+            {
                 case 1:
                     CustomersMenu();
                     break;
@@ -36,22 +46,47 @@ namespace StoreApplication.App {
                     break;
                 default:
                     Console.WriteLine("Wrong Choice Entered");
+                    Console.WriteLine("Press Any Key To Continue");
                     Console.ReadKey();
                     break;
             }
 
         }
 
-        static void CustomersMenu() {
-            Console.Clear();
-            Console.WriteLine("1. Add Customer");
-            Console.WriteLine("2. Place an Order");
-            Console.WriteLine("3. View All Customers");
-            Console.WriteLine("4. Search Customer By Name");
+        static void CustomersMenu() 
+        {
+            Customer customer = new Customer();
+            
+            int menuChoice;
+            do
+            {
+                Console.Clear();                
+                Console.WriteLine("1. Add Customer");
+                Console.WriteLine("2. Place an Order");
+                Console.WriteLine("3. View All Customers");
+                Console.WriteLine("4. Search Customer By Name");
+                Console.WriteLine("5+. Go Back");
+                Console.WriteLine("Enter Your Choice: ");
+                menuChoice = Int32.Parse(Console.ReadLine());
+
+                switch(menuChoice)
+                {
+                    case 1:
+                        customer.AddCustomer(jsonFilePath);
+                        break;
+                    case 3:
+                        customer.DisplayCustomers(jsonFilePath);
+                        break;
+                }
+
+            } while (menuChoice < 5);
+            
+            
             //Add an Option to return to the main menu for all
         }
 
-        static void StoreManagementMenu() {
+        static void StoreManagementMenu() 
+        {
             Console.Clear();
             Console.WriteLine("1. View All Orders");
             Console.WriteLine("2. Display Order by Index");

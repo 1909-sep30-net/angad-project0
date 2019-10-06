@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StoreApplication.Library {    
-    class Location {
+namespace StoreApplication.Library 
+{
+    public class Location 
+    {
 
         public int inventory = 0;
 

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StoreApplication.Library {
-    class Order {
+namespace StoreApplication.Library 
+{
+    public class Order 
+    {
 
         public Customer customer = new Customer();
 
