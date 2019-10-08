@@ -89,13 +89,11 @@ namespace StoreApplication.Library
                 {
                     Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
                 }
-                Console.WriteLine("Press any key to continue");
-                Console.ReadKey();
+                CustomerCount = tempData.Count;
             }
             else
             {
-                Console.WriteLine("No Data Present\nPress Any Key To Continue");
-                Console.ReadKey();
+                Console.WriteLine("No Data Present");
             }
         }
 
@@ -126,12 +124,12 @@ namespace StoreApplication.Library
                 if(searchCount == tempData.Count)
                 {
                     Console.Clear();
-                    Console.WriteLine("No Such Record Present\nPress Any Key To Continue");
-                    Console.ReadKey();
+                    Console.WriteLine("No Such Record Present");
                 }
-                Console.ReadKey();
             }
         }
+
+        public int CustomerCount { get; set; }
 
     }
 }

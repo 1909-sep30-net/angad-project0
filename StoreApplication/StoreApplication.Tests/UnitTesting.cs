@@ -3,7 +3,7 @@ using Xunit;
 
 namespace StoreApplication.Tests
 {
-    public class UnitTest1
+    public class UnitTesting
     {
         [Fact]
         public void Test1()

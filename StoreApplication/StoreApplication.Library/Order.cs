@@ -9,9 +9,6 @@ namespace StoreApplication.Library
     public class Order 
     {
 
-        //Validation to make sure there is no order with unreasonably high quantities
-        //Add some additional business Rules
-
         public Customer customer = new Customer();
 
         public Product product = new Product();
@@ -25,64 +22,123 @@ namespace StoreApplication.Library
         public void CreateOrder(string jsonFilePath, string jsonFilePathCustomer, string jsonFilePathProducts)
         {
 
-            //To add a new order, I'll display all customers, user will select one and the order will be placed under him in JSON
-
             Order order = new Order();
             Random random = new Random();
             order.OrderId = random.Next(10000, 99999);
 
             Console.Clear();
 
-            int selectCust = 0, selectProd = 0;
+            int selectCust = 0, selectProd = 0, citySelect = 0;
 
             List<Customer> tempCustData = new List<Customer>();
             List<Product> tempProdData = new List<Product>();
 
-            if (File.Exists(jsonFilePathProducts))
+            bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
+
+            while (allowedProduct)
             {
-                tempProdData.AddRange(product.DeserializeJsonFromFile(jsonFilePathProducts));
-                
-                product.DisplayProducts(jsonFilePathProducts);
-                Console.WriteLine("Please Select Product: ");
-                //WHILE NO INVALID VALUE
-                selectProd = Int32.Parse(Console.ReadLine());
+                if (File.Exists(jsonFilePathProducts))
+                {
+                    tempProdData.AddRange(product.DeserializeJsonFromFile(jsonFilePathProducts));
+
+                    product.DisplayProducts(jsonFilePathProducts);
+                    Console.WriteLine("Please Select Product: ");
+                    
+                    selectProd = Int32.Parse(Console.ReadLine());
+                    if (selectProd < product.ProductCount + 1)
+                    {
+                        allowedProduct = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Select a Valid Product\nPress Any Key To Try Again");
+                        Console.ReadKey();
+                        allowedProduct = true;
+                    }
+                }
             }
 
-            if (File.Exists(jsonFilePathCustomer))
+            while (allowedCustomer)
             {
-                tempCustData.AddRange(customer.DeserializeJsonFromFile(jsonFilePathCustomer));
-                
-                customer.DisplayCustomers(jsonFilePathCustomer);
-                Console.WriteLine("Please Select Customer: ");
-                //WHILE NO INVALID VALUE
-                selectCust = Int32.Parse(Console.ReadLine());
+                if (File.Exists(jsonFilePathCustomer))
+                {
+                    tempCustData.AddRange(customer.DeserializeJsonFromFile(jsonFilePathCustomer));
+
+                    customer.DisplayCustomers(jsonFilePathCustomer);
+                    Console.WriteLine("Please Select Customer: ");
+                    
+                    selectCust = Int32.Parse(Console.ReadLine());
+
+                    if(selectCust < customer.CustomerCount + 1)
+                    {
+                        allowedCustomer = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please Select A Valid Customer\nPress Any Key To Try Again");
+                        Console.ReadKey();
+                        allowedCity = true;
+                    }
+                }
             }
-            for(int i = 0; i < tempProdData[selectProd - 1].location.Count; i++)
+
+            while (allowedCity)
             {
-                Console.WriteLine("{0}. {1}", i + 1, tempProdData[selectProd - 1].location[i].City);
+                for (int i = 0; i < tempProdData[selectProd - 1].location.Count; i++)
+                {
+                    Console.WriteLine("{0}. {1} ({2})", i + 1, tempProdData[selectProd - 1].location[i].City, tempProdData[selectProd - 1].location[i].Inventory);
+                }
+
+                Console.WriteLine("Select The Location: ");
+                citySelect = Int32.Parse(Console.ReadLine());
+                if(citySelect < tempProdData[selectProd - 1].location.Count + 1)
+                {
+                    allowedCity = false;
+                }
+                else
+                {
+                    Console.WriteLine("Please Select a Valid City");
+                    allowedCity = true;
+                }
             }
-            int citySelect;
-            Console.WriteLine("Select The Location: ");
-            citySelect = Int32.Parse(Console.ReadLine());
 
-            //ADD Inventory Decrement and Validation
-            int quant = 0;
-            Console.WriteLine("Enter the Quantity: ");
-            quant = Int32.Parse(Console.ReadLine());
-            order.orderQuantity = quant;
-            tempProdData[selectProd - 1].location[citySelect].Inventory -= quant;
-            //Update the Inventory Change in the serialized JSON File
+            while (allowedQuant)
+            {
+                int quant = 0;
+                Console.WriteLine("Enter the Quantity: ");
+                quant = Int32.Parse(Console.ReadLine());
+                order.orderQuantity = quant;
 
+                if (quant < tempProdData[selectProd - 1].location[citySelect - 1].Inventory && quant < 5)
+                {
+                    tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
+                    product.SerializeJsonToFile(jsonFilePathProducts, tempProdData); // To Serialize the Changes made to the particular product
+                    allowedQuant = false;
+                }
+                else
+                {
+                    if (quant > tempProdData[selectProd - 1].location[citySelect - 1].Inventory)
+                    {
+                        Console.WriteLine("Not Enough Copies left in the Inventory");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
+                    }
+                    allowedQuant = true;
+                }
+            }
 
-            tempProdData[selectProd - 1].location[citySelect].orderSelect = true;
+            tempProdData[selectProd - 1].location[citySelect - 1].orderSelect = true;
 
-            //ADD PRODUCT
             order.product = tempProdData[selectProd - 1];
             order.customer = tempCustData[selectCust - 1];
 
             string dateString;
             Console.WriteLine("Enter Date and Time for the Order: ");
             dateString = Console.ReadLine();
+
+            //EXCEPTION HANDLING
             DateTime date = DateTime.ParseExact(dateString, "dd/MM/yyyy", null);
 
             order.OrderDate = date;
@@ -99,13 +155,14 @@ namespace StoreApplication.Library
                 tempOrder.Add(order);
             }
             SerializeJsonToFile(jsonFilePath, tempOrder);
+            Console.WriteLine("Order Created");
             Console.ReadKey();
 
         }
 
         public void SerializeJsonToFile(string jsonFilePath, List<Order> data)
         {
-            //Need to Append Instead of Creating a New File Everytime
+
             string json = JsonConvert.SerializeObject(data);
 
             // exceptions should be handled here
@@ -131,7 +188,7 @@ namespace StoreApplication.Library
                 string storeLocation = "";
 
                 Console.Clear();
-                Console.WriteLine("OrderID      Name      Store      Quantity");
+                Console.WriteLine("SNo.      OrderID      Name      Store      Quantity");
                 for (int i = 0; i < tempData.Count; i++)
                 {
                     for(int j = 0; j < tempData[i].product.location.Count; j++)
@@ -141,15 +198,12 @@ namespace StoreApplication.Library
                             storeLocation = tempData[i].product.location[j].City;
                         }
                     }
-                    Console.WriteLine(" {0}          {1}           {2}          {3}", i + 1, tempData[i].OrderId, tempData[i].product.ProductName, storeLocation, tempData[i].orderQuantity);
+                    Console.WriteLine(" {0}          {1}           {2}          {3}          {4}", i + 1, tempData[i].OrderId, tempData[i].product.ProductName, storeLocation, tempData[i].orderQuantity, tempData[i].orderQuantity);
                 }
-                Console.WriteLine("Press any key to continue");
-                Console.ReadKey();
             }
             else
             {
-                Console.WriteLine("No Data Present\nPress Any Key To Continue");
-                Console.ReadKey();
+                Console.WriteLine("No Data Present");
             }
         }
 

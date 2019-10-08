@@ -107,15 +107,15 @@ namespace StoreApplication.Library
                 {
                     Console.WriteLine(" {0}          {1}           {2}", i + 1, tempData[i].ProductName, tempData[i].Id);
                 }
-                Console.WriteLine("Press Any Key To Continue");
-                Console.ReadKey();
+                ProductCount = tempData.Count;
             }
             else
             {
-                Console.WriteLine("No Data Present\nPress Any Key To Continue");
-                Console.ReadKey();
+                Console.WriteLine("No Data Present");
             }
         }
+
+        public int ProductCount { get; set; }
 
     }
 }

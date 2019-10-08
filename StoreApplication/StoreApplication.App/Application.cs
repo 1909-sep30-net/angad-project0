@@ -31,9 +31,9 @@ namespace StoreApplication.App
 
             Console.WriteLine("1. Customers");
             Console.WriteLine("2. Store Management");
-            Console.WriteLine("3. Exit\n");
+            Console.WriteLine("3. Exit");
 
-            Console.WriteLine("Please Enter Your Choice: ");
+            Console.WriteLine("\nPlease Enter Your Choice: ");
             choice = Int32.Parse(Console.ReadLine());
 
             switch (choice)
@@ -42,7 +42,8 @@ namespace StoreApplication.App
                     CustomersMenu();
                     break;
                 case 2:
-                    StoreManagementMenu();
+                    //StoreManagementMenu();
+                    StoreManagement();
                     break;
                 case 3:
                     Environment.Exit(0);
@@ -65,11 +66,11 @@ namespace StoreApplication.App
             {
                 Console.Clear();
                 Console.WriteLine("1. Add Customer");
-                Console.WriteLine("2. Place an Order");
-                Console.WriteLine("3. View All Customers");
-                Console.WriteLine("4. Search Customer By Name");
-                Console.WriteLine("5+. Go Back");
-                Console.WriteLine("Enter Your Choice: ");
+                Console.WriteLine("2. View All Customers");
+                Console.WriteLine("3. Search Customer By Name");
+                Console.WriteLine("4+. Go Back");
+
+                Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
 
                 switch (menuChoice)
@@ -77,21 +78,78 @@ namespace StoreApplication.App
                     case 1:
                         customer.AddCustomer(jsonFilePathCustomers);
                         break;
-                    case 3:
+                    case 2:
                         customer.DisplayCustomers(jsonFilePathCustomers);
+                        Console.WriteLine("Press any key to continue");
+                        Console.ReadKey();
                         break;
-                    case 4:
+                    case 3:
                         customer.SearchByName(jsonFilePathCustomers);
+                        Console.WriteLine("Press Any Key To Continue");
+                        Console.ReadKey();
                         break;
                 }
 
-            } while (menuChoice < 5);
+            } while (menuChoice < 4);
 
-
-            //Add an Option to return to the main menu for all
         }
 
-        static void StoreManagementMenu()
+        static void StoreManagement()
+        {
+            int menuChoice = 0;
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("1. Manage Orders");
+                Console.WriteLine("2. Manage Products");
+                Console.WriteLine("3+. Go Back");
+
+                Console.WriteLine("\nEnter Your Choice: ");
+                menuChoice = Int32.Parse(Console.ReadLine());
+
+                switch (menuChoice)
+                {
+                    case 1:
+                        ManageOrdersMenu();
+                        break;
+                    case 2:
+                        ManageProductsMenu();
+                        break;
+
+                }
+            } while (menuChoice < 3);
+        }
+
+        static void ManageProductsMenu()
+        {
+            int menuChoice = 0;
+            Product product = new Product();
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("1. Add New Product");
+                Console.WriteLine("2. Display All Products");
+                Console.WriteLine("3+. Go Back");
+
+                Console.WriteLine("\nEnter Your Choice: ");
+                menuChoice = Int32.Parse(Console.ReadLine());
+
+                switch (menuChoice)
+                {
+                    case 1:
+                        product.AddProducts(jsonFilePathProducts);
+                        break;
+                    case 2:
+                        product.DisplayProducts(jsonFilePathProducts);
+                        Console.WriteLine("Press Any Key To Continue");
+                        Console.ReadKey();
+                        break;
+                }
+            } while (menuChoice < 3);
+        }
+
+        static void ManageOrdersMenu()
         {
             Product product = new Product();
             Order order = new Order();
@@ -104,11 +162,9 @@ namespace StoreApplication.App
                 Console.WriteLine("3. Display Order by Index");
                 Console.WriteLine("4. Display Order History of a Store Location");
                 Console.WriteLine("5. Display Order History of a Customer");
-                Console.WriteLine("6. Add New Product");
-                Console.WriteLine("7. Display All Products");
-                Console.WriteLine("8+. Go Back");
+                Console.WriteLine("6+. Go Back");
 
-                Console.WriteLine("Enter Your Choice: ");
+                Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
 
                 switch (menuChoice)
@@ -116,15 +172,23 @@ namespace StoreApplication.App
                     case 1:
                         order.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts);
                         break;
-                    case 6:
-                        product.AddProducts(jsonFilePathProducts);
+                    case 2:
+                        order.DisplayOrders(jsonFilePathOrders);
+                        Console.WriteLine("Press Any Key To Continue");
+                        Console.ReadKey();
                         break;
-                    case 7:
-                        product.DisplayProducts(jsonFilePathProducts);
+                    case 3:
+
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+
                         break;
                 }
 
-            } while (menuChoice < 5);
+            } while (menuChoice < 6);
 
         }
 
