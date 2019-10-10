@@ -12,10 +12,6 @@ namespace StoreApplication.Library
 
         public bool orderSelect { get; set; }
 
-        //Decrease inventory when orders are accepted
-
-        //If the order can't be fulfilled with the remaining inventory in the store, REJECT order
-
     }
 
 }

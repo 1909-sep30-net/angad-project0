@@ -15,16 +15,11 @@ namespace StoreApplication.Library
         public string LastName { get; set; }
 
         private string defaultLocation = "Arlington";
+        public int CustomerCount { get; set; }
 
-        public void AddCustomer(string jsonFilePath)
+        public void AddCustomer(string jsonFilePath, string fullName)
         {
-            string fullName;
             Customer newCustomer = new Customer();
-            Console.Clear();
-
-            Console.WriteLine("Add Customer\n");
-            Console.WriteLine("Enter The Name: ");
-            fullName = Console.ReadLine();
 
             string[] nameHolder = new string[3];
             nameHolder = fullName.Split(' ');
@@ -35,8 +30,7 @@ namespace StoreApplication.Library
                 newCustomer.LastName = nameHolder[1];
                 Console.WriteLine("Added Customer {0} {1}", newCustomer.FirstName, newCustomer.LastName);
                 List<Customer> tempCustomer = new List<Customer>();
-                //If the file already exists (i.e. Not the first time Adding a customer) It deserializes the already input data and adds that to the tempCustomer
-                //The tempCustomer is then appended with the newCustomer
+
                 if(File.Exists(jsonFilePath))
                 {
                     tempCustomer.AddRange(DeserializeJsonFromFile(jsonFilePath));
@@ -89,7 +83,6 @@ namespace StoreApplication.Library
                 {
                     Console.WriteLine(" {0}              {1}           {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
                 }
-                CustomerCount = tempData.Count;
             }
             else
             {
@@ -128,8 +121,6 @@ namespace StoreApplication.Library
                 }
             }
         }
-
-        public int CustomerCount { get; set; }
-
+        
     }
 }
