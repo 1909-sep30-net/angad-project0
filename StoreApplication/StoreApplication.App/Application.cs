@@ -206,6 +206,8 @@ namespace StoreApplication.App
 
                         string productName, productType, storeLocation = "";
                         int storeCount, inventoryForLoc = 0;
+                        List<string> storeLocationList = new List<string>();
+                        List<int> storeInventoryList = new List<int>();
 
                         Console.WriteLine("Enter Product Name: ");
                         productName = Console.ReadLine();
@@ -216,15 +218,17 @@ namespace StoreApplication.App
                         Console.WriteLine("How many Stores? ");
                         storeCount = Int32.Parse(Console.ReadLine());
 
-                        for (int i = 0; i < storeCount; i++)
+                        for (int i = 0; i < storeCount; i++) // NEED TO FIX SINCE IT'S ONLY INPUTTING THE LAST VALUE
                         {
                             Console.WriteLine("Store Location {0}: ", i + 1);
                             storeLocation = Console.ReadLine();
+                            storeLocationList.Add(storeLocation);
                             Console.WriteLine("Inventory for the {0} Store", storeLocation);
                             inventoryForLoc = Int32.Parse(Console.ReadLine());
+                            storeInventoryList.Add(inventoryForLoc);
                         }
 
-                        prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount);
+                        prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
 
                         Console.WriteLine("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
                         Console.ReadKey();
@@ -277,16 +281,32 @@ namespace StoreApplication.App
                 switch (menuChoice)
                 {
                     case 1:
-                        //order.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts);
-                        //ADD ORDERDATA.CREATEORDER
+
                         int selectProd, selectCust, citySelect;
                         int quant = 0;
-
                         string dateString;
+
+                        bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
 
                         Console.Clear();
 
-                        dataProduct.DisplayProducts(jsonFilePathProducts);
+                        #region Display+Select Product
+
+                        List<Product> tempDisplayProduct = new List<Product>();
+                        tempDisplayProduct = dataProduct.DisplayProducts(jsonFilePathProducts);
+                        Console.Clear();
+                        Console.WriteLine("Products");
+                        if (tempDisplayProduct.Count != 0)
+                        {
+                            for (int i = 0; i < tempDisplayProduct.Count; i++)
+                            {
+                                Console.WriteLine(" {0}. {1} | ID: {2}", i + 1, tempDisplayProduct[i].ProductName, tempDisplayProduct[i].Id);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Data Present");
+                        }
 
                         Console.WriteLine("Please Select Product: ");
                         selectProd = Int32.Parse(Console.ReadLine());
@@ -297,7 +317,29 @@ namespace StoreApplication.App
                             Console.ReadKey();
                         }
 
-                        dataCustomer.DisplayCustomers(jsonFilePathCustomers);
+                        #endregion
+
+                        Console.Clear();
+
+                        #region Display+Select Customer
+                        Console.Clear();
+                        List<Customer> tempData = new List<Customer>();
+                        tempData = dataCustomer.DisplayCustomers(jsonFilePathCustomers);
+
+                        Console.Clear();
+                        Console.WriteLine("Please Select a Customer");
+                        if (tempData.Count != 1)
+                        {
+                            for (int i = 0; i < tempData.Count; i++)
+                            {
+                                Console.WriteLine(" {0}. {1} {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No Data Present");
+                        }
+
                         Console.WriteLine("Please Select Customer: ");
                         selectCust = Int32.Parse(Console.ReadLine());
 
@@ -306,33 +348,52 @@ namespace StoreApplication.App
                             Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
                             Console.ReadKey();
                         }
+                        #endregion
 
-                        for (int i = 0; i < orderData.tempProdData[selectProd - 1].location.Count; i++)
+                        Console.Clear();
+
+                        #region Display+Select Location
+                        for (int i = 0; i < tempDisplayProduct[selectProd - 1].location.Count; i++)
                         {
-                            Console.WriteLine("{0}. {1} ({2})", i + 1, orderData.tempProdData[selectProd - 1].location[i].City, orderData.tempProdData[selectProd - 1].location[i].Inventory);
+                            Console.WriteLine("{0}. {1} ({2})", i + 1, tempDisplayProduct[selectProd - 1].location[i].City, tempDisplayProduct[selectProd - 1].location[i].Inventory);
                         }
 
                         Console.WriteLine("Select The Location: ");
                         citySelect = Int32.Parse(Console.ReadLine());
-                        if (citySelect > orderData.tempProdData[selectProd - 1].location.Count + 1)
+
+                        if (citySelect > tempDisplayProduct[selectProd - 1].location.Count + 1)
                         {
                             Console.WriteLine("Please Select a Valid City");
                         }
+                        #endregion
 
+                        Console.Clear();
+
+                        #region  Enter Quantity
                         Console.WriteLine("Enter the Quantity: ");
                         quant = Int32.Parse(Console.ReadLine());
 
-                        if (quant > orderData.tempProdData[selectProd - 1].location[citySelect - 1].Inventory)
+                        if (quant > tempDisplayProduct[selectProd - 1].location[citySelect - 1].Inventory)
                         {
                             Console.WriteLine("Not Enough Copies left in the Inventory");
                         }
-                        else
+                        else if (quant > 5)
                         {
                             Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
                         }
+                        #endregion
 
+                        Console.Clear();
+
+                        #region Enter Date
                         Console.WriteLine("Enter Date and Time for the Order: ");
                         dateString = Console.ReadLine();
+                        #endregion
+
+                        Console.Clear();
+
+                        orderData.tempProdData = tempDisplayProduct;
+                        orderData.tempCustData = tempData;
 
                         orderData.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts, selectProd, selectCust, citySelect, quant, dateString);
 

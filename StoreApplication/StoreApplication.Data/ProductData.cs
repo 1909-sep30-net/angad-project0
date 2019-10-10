@@ -12,7 +12,7 @@ namespace StoreApplication.Data
         Product prodData = new Product();
         public int ProductCount { get; set; }
 
-        public void AddProducts(string jsonFilePath, string productName, string productType, string storeLocation, int inventoryForLoc, int storeCount)
+        public void AddProducts(string jsonFilePath, string productName, string productType, string storeLocation, int inventoryForLoc, int storeCount, List<string> storeLocationList, List<int> storeInventoryList)
         {
 
             Product product = new Product();
@@ -26,8 +26,8 @@ namespace StoreApplication.Data
             for (int i = 0; i < storeCount; i++)
             {
                 Location tempLoc = new Location();
-                tempLoc.City = storeLocation;
-                tempLoc.Inventory = inventoryForLoc;
+                tempLoc.City = storeLocationList[i];
+                tempLoc.Inventory = storeInventoryList[i];
                 tempLoc.orderSelect = false;
                 product.location.Add(tempLoc);
             }

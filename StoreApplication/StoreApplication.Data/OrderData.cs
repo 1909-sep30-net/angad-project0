@@ -26,8 +26,14 @@ namespace StoreApplication.Data
             Random random = new Random();
             order.OrderId = random.Next(10000, 99999);
 
-            bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
+            tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
+            product.SerializeJsonToFile(jsonFilePathProducts, tempProdData);
 
+            order.orderQuantity = quant;
+
+            #region Allowing
+            /*
+            bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
             while (allowedProduct)
             {
                 if (File.Exists(jsonFilePathProducts))
@@ -90,6 +96,8 @@ namespace StoreApplication.Data
                     allowedQuant = true;
                 }
             }
+            */
+            #endregion
 
             tempProdData[selectProd - 1].location[citySelect - 1].orderSelect = true;
 
@@ -98,7 +106,6 @@ namespace StoreApplication.Data
 
             //EXCEPTION HANDLING
             DateTime date = DateTime.ParseExact(dateString, "dd/MM/yyyy", null);
-
             order.OrderDate = date;
 
             List<Order> tempOrder = new List<Order>();
@@ -115,7 +122,6 @@ namespace StoreApplication.Data
             order.SerializeJsonToFile(jsonFilePath, tempOrder);
 
         }
-
 
         public List<Order> DisplayOrders(string jsonFilePath)
         {
