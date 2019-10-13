@@ -2,6 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 using StoreApplication.Library;
+using Microsoft.EntityFrameworkCore;
+using StoreApplication.Data.Entities;
 
 namespace StoreApplication.Data
 {
@@ -9,7 +11,7 @@ namespace StoreApplication.Data
     {
         private bool addedCustomer;
 
-        Customer customer = new Customer();
+        Library.Customer customer = new Library.Customer();
         public string[] nameHolder = new string[3];
         public int searchCount = 0;
 
@@ -18,7 +20,7 @@ namespace StoreApplication.Data
         public void AddCustomer(string jsonFilePath, string fullName)
         {
 
-            Customer newCustomer = new Customer();
+            Library.Customer newCustomer = new Library.Customer();
             nameHolder = fullName.Split(' ');
 
             if (nameHolder.Length == 2)
@@ -26,7 +28,7 @@ namespace StoreApplication.Data
                 newCustomer.FirstName = nameHolder[0];
                 newCustomer.LastName = nameHolder[1];
 
-                List<Customer> tempCustomer = new List<Customer>();
+                List<Library.Customer> tempCustomer = new List<Library.Customer>();
                 
                 //If the file already exists (i.e. Not the first time Adding a customer) It deserializes the already input data and adds that to the tempCustomer
                 //The tempCustomer is then appended with the newCustomer
@@ -50,9 +52,28 @@ namespace StoreApplication.Data
 
         }
 
-        public List<Customer> DisplayCustomers(string jsonFilePath)
+        public void DisplayCustomersDB()
+        //public void DisplayCustomersDB(GameStoreContext context)
         {
-            List<Customer> tempData = new List<Customer>();
+
+            string connectionString = SecretConfiguration.configurationString;
+
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+
+            foreach (Entities.Customer customer in context.Customer)
+            {
+                Console.WriteLine($"Id: {customer.CustomerId}. Name: {customer.FirstName} {customer.LastName}");
+            }
+
+        }
+
+        public List<Library.Customer> DisplayCustomers(string jsonFilePath)
+        {
+            List<Library.Customer> tempData = new List<Library.Customer>();
             if (File.Exists(jsonFilePath))
             {
                 tempData = customer.DeserializeJsonFromFile(jsonFilePath);

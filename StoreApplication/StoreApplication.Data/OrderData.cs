@@ -20,6 +20,8 @@ namespace StoreApplication.Data
         public List<Customer> tempCustData = new List<Customer>();
         public List<Product> tempProdData = new List<Product>();
 
+
+        //ADD FOR MULTIPLE PRODUCTS
         public void CreateOrder(string jsonFilePath, string jsonFilePathCustomer, string jsonFilePathProducts, int selectProd, int selectCust, int citySelect, int quant, string dateString)
         {
 
@@ -30,75 +32,7 @@ namespace StoreApplication.Data
             product.SerializeJsonToFile(jsonFilePathProducts, tempProdData);
 
             order.orderQuantity = quant;
-
-            #region Allowing
-            /*
-            bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
-            while (allowedProduct)
-            {
-                if (File.Exists(jsonFilePathProducts))
-                {
-                    tempProdData.AddRange(product.DeserializeJsonFromFile(jsonFilePathProducts));
-
-                    if (selectProd < product.ProductCount + 1)
-                    {
-                        allowedProduct = false;
-                    }
-                    else
-                    {
-                        allowedProduct = true;
-                    }
-                }
-            }
-
-            while (allowedCustomer)
-            {
-                if (File.Exists(jsonFilePathCustomer))
-                {
-                    tempCustData.AddRange(customer.DeserializeJsonFromFile(jsonFilePathCustomer));
-
-                    if (selectCust < customer.CustomerCount + 1)
-                    {
-                        allowedCustomer = false;
-                    }
-                    else
-                    {
-                        allowedCity = true;
-                    }
-                }
-            }
-
-            while (allowedCity)
-            {
-
-                if (citySelect < tempProdData[selectProd - 1].location.Count + 1)
-                {
-                    allowedCity = false;
-                }
-                else
-                {
-                    allowedCity = true;
-                }
-            }
-
-            while (allowedQuant)
-            {
-                order.orderQuantity = quant;
-
-                if (quant < tempProdData[selectProd - 1].location[citySelect - 1].Inventory && quant < 5)
-                {
-                    tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
-                    product.SerializeJsonToFile(jsonFilePathProducts, tempProdData); // To Serialize the Changes made to the particular product
-                    allowedQuant = false;
-                }
-                else
-                {
-                    allowedQuant = true;
-                }
-            }
-            */
-            #endregion
-
+            
             tempProdData[selectProd - 1].location[citySelect - 1].orderSelect = true;
 
             order.product = tempProdData[selectProd - 1];

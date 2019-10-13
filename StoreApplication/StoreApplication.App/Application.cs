@@ -99,7 +99,7 @@ namespace StoreApplication.App
                     case 2:
 
                         Console.Clear();
-                        List<Customer> tempData = new List<Customer>();
+                        /*List<Customer> tempData = new List<Customer>();
                         tempData = custData.DisplayCustomers(jsonFilePathCustomers);
 
                         Console.Clear();
@@ -114,7 +114,9 @@ namespace StoreApplication.App
                         else
                         {
                             Console.WriteLine("No Data Present");
-                        }
+                        }*/
+                        CustomerData cust = new CustomerData();
+                        cust.DisplayCustomersDB();
 
                         Console.WriteLine("Press any key to continue");
                         Console.ReadKey();
@@ -155,7 +157,7 @@ namespace StoreApplication.App
 
             } while (menuChoice < 4);
 
-        }
+        } 
 
         static void StoreManagement()
         {
@@ -282,121 +284,181 @@ namespace StoreApplication.App
                 {
                     case 1:
 
-                        int selectProd, selectCust, citySelect;
+                        int selectProd = 0, selectCust = 0, citySelect = 0;
                         int quant = 0;
                         string dateString;
 
                         bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
-
-                        Console.Clear();
+                        
+                        List<Product> tempDisplayProduct = new List<Product>();
+                        List<Customer> tempData = new List<Customer>();
 
                         #region Display+Select Product
-
-                        List<Product> tempDisplayProduct = new List<Product>();
-                        tempDisplayProduct = dataProduct.DisplayProducts(jsonFilePathProducts);
-                        Console.Clear();
-                        Console.WriteLine("Products");
-                        if (tempDisplayProduct.Count != 0)
+                        while (allowedProduct)
                         {
-                            for (int i = 0; i < tempDisplayProduct.Count; i++)
+                            Console.Clear();
+                            bool doneSelection = false;
+                            int addMore = 1;
+                            
+                            List<int> selectedProducts = new List<int>();
+
+                            tempDisplayProduct = dataProduct.DisplayProducts(jsonFilePathProducts);
+                            while (!doneSelection)
                             {
-                                Console.WriteLine(" {0}. {1} | ID: {2}", i + 1, tempDisplayProduct[i].ProductName, tempDisplayProduct[i].Id);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Data Present");
-                        }
+                                Console.Clear();
+                                Console.WriteLine("Products");
+                                if (tempDisplayProduct.Count != 0)
+                                {
+                                    for (int i = 0; i < tempDisplayProduct.Count; i++)
+                                    {
+                                        Console.WriteLine(" {0}. {1} | ID: {2}", i + 1, tempDisplayProduct[i].ProductName, tempDisplayProduct[i].Id);
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine("No Data Present");
+                                }
 
-                        Console.WriteLine("Please Select Product: ");
-                        selectProd = Int32.Parse(Console.ReadLine());
-                        
-                        if(selectProd > dataProduct.ProductCount + 1)
-                        {
-                            Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
-                            Console.ReadKey();
+                                Console.WriteLine("Please Select Product: ");
+                                selectProd = Int32.Parse(Console.ReadLine());
+
+
+                                if (selectProd > dataProduct.ProductCount + 1)
+                                {
+                                    allowedProduct = true;
+                                    Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                    allowedProduct = false;
+                                }
+                                Console.WriteLine("Would you like to add more Products?");
+                                Console.WriteLine("1. YES");
+                                Console.WriteLine("2. NO");
+                                Console.WriteLine("Please Enter Your Choice: ");
+                                addMore = Int32.Parse(Console.ReadLine());
+
+                                if (addMore == 1)
+                                {
+                                    doneSelection = false;
+                                }
+                                else if (addMore == 2)
+                                {
+                                    doneSelection = true;
+                                }
+                                else
+                                {
+                                    doneSelection = true;
+                                    Console.WriteLine("Invalid Choice Entered\nNo more products will be added\nPress any key to continue");
+                                    Console.ReadKey();
+                                }
+                            }
                         }
 
                         #endregion
-
-                        Console.Clear();
 
                         #region Display+Select Customer
-                        Console.Clear();
-                        List<Customer> tempData = new List<Customer>();
-                        tempData = dataCustomer.DisplayCustomers(jsonFilePathCustomers);
-
-                        Console.Clear();
-                        Console.WriteLine("Please Select a Customer");
-                        if (tempData.Count != 1)
+                        while (allowedCustomer)
                         {
-                            for (int i = 0; i < tempData.Count; i++)
+                            Console.Clear();
+                            tempData = dataCustomer.DisplayCustomers(jsonFilePathCustomers);
+
+                            Console.Clear();
+                            Console.WriteLine("Please Select a Customer");
+                            if (tempData.Count != 1)
                             {
-                                Console.WriteLine(" {0}. {1} {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
+                                for (int i = 0; i < tempData.Count; i++)
+                                {
+                                    Console.WriteLine(" {0}. {1} {2}", i + 1, tempData[i].FirstName, tempData[i].LastName);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("No Data Present");
+                            }
+
+                            Console.WriteLine("Please Select Customer: ");
+                            selectCust = Int32.Parse(Console.ReadLine());
+
+                            if (selectCust > dataCustomer.CustomerCount + 1)
+                            {
+                                allowedCustomer = true;
+                                Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
+                                Console.ReadKey();
+                            }
+                            else
+                            {
+                                allowedCustomer = false;
                             }
                         }
-                        else
-                        {
-                            Console.WriteLine("No Data Present");
-                        }
-
-                        Console.WriteLine("Please Select Customer: ");
-                        selectCust = Int32.Parse(Console.ReadLine());
-
-                        if (selectCust > dataCustomer.CustomerCount + 1)
-                        {
-                            Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
-                            Console.ReadKey();
-                        }
                         #endregion
-
-                        Console.Clear();
 
                         #region Display+Select Location
-                        for (int i = 0; i < tempDisplayProduct[selectProd - 1].location.Count; i++)
+                        while (allowedCity)
                         {
-                            Console.WriteLine("{0}. {1} ({2})", i + 1, tempDisplayProduct[selectProd - 1].location[i].City, tempDisplayProduct[selectProd - 1].location[i].Inventory);
-                        }
+                            Console.Clear();
+                            for (int i = 0; i < tempDisplayProduct[selectProd - 1].location.Count; i++)
+                            {
+                                Console.WriteLine("{0}. {1} ({2})", i + 1, tempDisplayProduct[selectProd - 1].location[i].City, tempDisplayProduct[selectProd - 1].location[i].Inventory);
+                            }
 
-                        Console.WriteLine("Select The Location: ");
-                        citySelect = Int32.Parse(Console.ReadLine());
+                            Console.WriteLine("Select The Location: ");
+                            citySelect = Int32.Parse(Console.ReadLine());
 
-                        if (citySelect > tempDisplayProduct[selectProd - 1].location.Count + 1)
-                        {
-                            Console.WriteLine("Please Select a Valid City");
+                            if (citySelect > tempDisplayProduct[selectProd - 1].location.Count + 1)
+                            {
+                                allowedCity = true;
+                                Console.WriteLine("Please Select a Valid City");
+                            }
+                            else
+                            {
+                                allowedCity = false;
+                            }
                         }
                         #endregion
-
-                        Console.Clear();
 
                         #region  Enter Quantity
-                        Console.WriteLine("Enter the Quantity: ");
-                        quant = Int32.Parse(Console.ReadLine());
 
-                        if (quant > tempDisplayProduct[selectProd - 1].location[citySelect - 1].Inventory)
+                        while (allowedQuant)
                         {
-                            Console.WriteLine("Not Enough Copies left in the Inventory");
-                        }
-                        else if (quant > 5)
-                        {
-                            Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
+                            Console.Clear();
+                            Console.WriteLine("Enter the Quantity: ");
+                            quant = Int32.Parse(Console.ReadLine());
+
+                            if (quant > tempDisplayProduct[selectProd - 1].location[citySelect - 1].Inventory)
+                            {
+                                Console.WriteLine("Not Enough Copies left in the Inventory");
+                                Console.WriteLine("Press Any Key To Try Again");
+                                Console.ReadKey();
+                                allowedQuant = true;
+                            }
+                            else if (quant > 5)
+                            {
+                                Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
+                                Console.WriteLine("Press Any Key To Try Again");
+                                Console.ReadKey();
+                                allowedQuant = true;
+                            }
+                            else
+                            {
+                                allowedQuant = false;
+                            }
                         }
                         #endregion
 
-                        Console.Clear();
-
                         #region Enter Date
+                        Console.Clear();
                         Console.WriteLine("Enter Date and Time for the Order: ");
                         dateString = Console.ReadLine();
                         #endregion
-
-                        Console.Clear();
 
                         orderData.tempProdData = tempDisplayProduct;
                         orderData.tempCustData = tempData;
 
                         orderData.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts, selectProd, selectCust, citySelect, quant, dateString);
 
+                        Console.Clear();
                         Console.WriteLine("Order Created");
                         Console.ReadKey();
                         break;
