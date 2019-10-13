@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using StoreApplication.Library;
 using Microsoft.EntityFrameworkCore;
 using StoreApplication.Data.Entities;
+using System.Linq;
 
 namespace StoreApplication.Data
 {
@@ -50,6 +51,30 @@ namespace StoreApplication.Data
                 addedCustomer = false;
             }
 
+        }
+
+        public void AddCustomerDB(string fullName)
+        {
+
+            string connectionString = SecretConfiguration.configurationString;
+
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+
+            // check if already exists
+            Entities.Customer newCust = new Entities.Customer();
+            string[] name = fullName.Split(' ');
+
+            newCust.CustomerId = 3; //NEEDS TO BE TURNED INTO IDENTITY (NO INPUT)
+            newCust.FirstName = name[0];
+            newCust.LastName = name[1];
+
+            context.Customer.Add(newCust);
+
+            context.SaveChanges();
         }
 
         public void DisplayCustomersDB()

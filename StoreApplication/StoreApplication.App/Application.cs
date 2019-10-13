@@ -84,6 +84,7 @@ namespace StoreApplication.App
                         fullName = Console.ReadLine();
 
                         custData.AddCustomer(jsonFilePathCustomers, fullName);
+                        custData.AddCustomerDB(fullName);
 
                         if (custData.nameHolder.Length == 2)
                         {
@@ -99,6 +100,8 @@ namespace StoreApplication.App
                     case 2:
 
                         Console.Clear();
+                        
+                        #region Serialized Data Output
                         /*List<Customer> tempData = new List<Customer>();
                         tempData = custData.DisplayCustomers(jsonFilePathCustomers);
 
@@ -115,6 +118,8 @@ namespace StoreApplication.App
                         {
                             Console.WriteLine("No Data Present");
                         }*/
+                        #endregion
+
                         CustomerData cust = new CustomerData();
                         cust.DisplayCustomersDB();
 
