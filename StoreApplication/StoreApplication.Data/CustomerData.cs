@@ -21,7 +21,7 @@ namespace StoreApplication.Data
         public void AddCustomer(string jsonFilePath, string fullName)
         {
 
-            Library.Customer newCustomer = new Library.Customer();
+            Customer newCustomer = new Customer();
             nameHolder = fullName.Split(' ');
 
             if (nameHolder.Length == 2)
@@ -29,7 +29,7 @@ namespace StoreApplication.Data
                 newCustomer.FirstName = nameHolder[0];
                 newCustomer.LastName = nameHolder[1];
 
-                List<Library.Customer> tempCustomer = new List<Library.Customer>();
+                List<Customer> tempCustomer = new List<Customer>();
                 
                 //If the file already exists (i.e. Not the first time Adding a customer) It deserializes the already input data and adds that to the tempCustomer
                 //The tempCustomer is then appended with the newCustomer
@@ -64,21 +64,18 @@ namespace StoreApplication.Data
 
             using var context = new GameStoreContext(options);
 
-            // check if already exists
-            Entities.Customer newCust = new Entities.Customer();
+            Customers newCust = new Customers();
             string[] name = fullName.Split(' ');
 
-            newCust.CustomerId = 3; //NEEDS TO BE TURNED INTO IDENTITY (NO INPUT)
             newCust.FirstName = name[0];
             newCust.LastName = name[1];
 
-            context.Customer.Add(newCust);
+            context.Customers.Add(newCust);
 
             context.SaveChanges();
         }
 
         public void DisplayCustomersDB()
-        //public void DisplayCustomersDB(GameStoreContext context)
         {
 
             string connectionString = SecretConfiguration.configurationString;
@@ -89,16 +86,38 @@ namespace StoreApplication.Data
 
             using var context = new GameStoreContext(options);
 
-            foreach (Entities.Customer customer in context.Customer)
+            foreach (Customers customer in context.Customers)
             {
-                Console.WriteLine($"Id: {customer.CustomerId}. Name: {customer.FirstName} {customer.LastName}");
+                Console.WriteLine($"Id: {customer.CustomerId} | Name: {customer.FirstName} {customer.LastName}");
             }
 
         }
 
-        public List<Library.Customer> DisplayCustomers(string jsonFilePath)
+        public void SearchCustomersDB(string name)
         {
-            List<Library.Customer> tempData = new List<Library.Customer>();
+            string connectionString = SecretConfiguration.configurationString;
+
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+
+            var foundName = context.Customers.FirstOrDefault(p => p.FirstName == name || p.LastName == name || p.FirstName + p.LastName == name);
+
+            if (foundName is null)
+            {
+                Console.WriteLine("No Record Found");
+                return;
+            }
+
+            Console.WriteLine($"Id: {foundName.CustomerId} | Name: {foundName.FirstName} {foundName.LastName}");
+
+        }
+
+        public List<Customer> DisplayCustomers(string jsonFilePath)
+        {
+            List<Customer> tempData = new List<Customer>();
             if (File.Exists(jsonFilePath))
             {
                 tempData = customer.DeserializeJsonFromFile(jsonFilePath);

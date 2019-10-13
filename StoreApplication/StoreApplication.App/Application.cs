@@ -83,8 +83,8 @@ namespace StoreApplication.App
                         Console.WriteLine("Enter The Name: ");
                         fullName = Console.ReadLine();
 
-                        custData.AddCustomer(jsonFilePathCustomers, fullName);
-                        custData.AddCustomerDB(fullName);
+                        custData.AddCustomer(jsonFilePathCustomers, fullName); //SERIALIZED
+                        custData.AddCustomerDB(fullName); //DATABASE
 
                         if (custData.nameHolder.Length == 2)
                         {
@@ -133,27 +133,32 @@ namespace StoreApplication.App
                         Console.WriteLine("Please Enter a First or a Last Name To Search");
                         searchName = Console.ReadLine();
 
-                        List<Customer> tempDisplay = new List<Customer>();
+                        #region SerializedSearching
+                        //List<Customer> tempDisplay = new List<Customer>();
 
-                        tempDisplay = custData.DisplayCustomers(jsonFilePathCustomers);
+                        //tempDisplay = custData.DisplayCustomers(jsonFilePathCustomers);
 
-                        for (int i = 0; i < tempDisplay.Count; i++)
-                        {
-                            if (tempDisplay[i].FirstName.Equals(searchName) || tempDisplay[i].LastName.Equals(searchName))
-                            {
-                                Console.WriteLine(" {0}. {1} {2}", i + 1, tempDisplay[i].FirstName, tempDisplay[i].LastName);
-                            }
-                            else
-                            {
-                                custData.searchCount++;
-                            }
-                        }
+                        //for (int i = 0; i < tempDisplay.Count; i++)
+                        //{
+                        //    if (tempDisplay[i].FirstName.Equals(searchName) || tempDisplay[i].LastName.Equals(searchName))
+                        //    {
+                        //        Console.WriteLine(" {0}. {1} {2}", i + 1, tempDisplay[i].FirstName, tempDisplay[i].LastName);
+                        //    }
+                        //    else
+                        //    {
+                        //        custData.searchCount++;
+                        //    }
+                        //}
 
-                        if (custData.searchCount == tempDisplay.Count)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("No Such Record Present");
-                        }
+                        //if (custData.searchCount == tempDisplay.Count)
+                        //{
+                        //    Console.Clear();
+                        //    Console.WriteLine("No Such Record Present");
+                        //}
+                        #endregion
+
+                        CustomerData customerData = new CustomerData();
+                        customerData.SearchCustomersDB(searchName);
 
                         Console.WriteLine("Press Any Key To Continue");
                         Console.ReadKey();

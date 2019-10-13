@@ -1,14 +1,14 @@
 DROP TABLE Inventory;
-DROP TABLE Location;
+DROP TABLE Locations;
 DROP TABLE OrderedProducts;
 DROP TABLE Orders;
 DROP TABLE Products;
-DROP TABLE Customer;
+DROP TABLE Customers;
 
 GO
 
-CREATE TABLE Customer (
-  CustomerId INT PRIMARY KEY NOT NULL,
+CREATE TABLE Customers (
+  CustomerId INT PRIMARY KEY NOT NULL IDENTITY,
   FirstName VARCHAR(50),
   LastName VARCHAR(50)
 );
@@ -21,7 +21,7 @@ CREATE TABLE Products (
 
 CREATE TABLE Orders (
   OrderId INT PRIMARY KEY NOT NULL,
-  CustomerId INT FOREIGN KEY REFERENCES Customer(CustomerId),
+  CustomerId INT FOREIGN KEY REFERENCES Customers(CustomerId),
   ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
   OrderDate DATE,
   Quantity INT
@@ -32,7 +32,7 @@ CREATE TABLE OrderedProducts (
   ProductId INT FOREIGN KEY REFERENCES Products(ProductId)
 );
 
-CREATE TABLE Location (
+CREATE TABLE Locations (
   LocationId INT PRIMARY KEY NOT NULL,
   City VARCHAR(50)
 );
@@ -43,8 +43,12 @@ CREATE TABLE Inventory (
 	Inventory INT
 );
 
-INSERT INTO Customer (CustomerId, FirstName, LastName) VALUES
-(1, 'Angad', 'Minhas'),
-(2, 'Arthur', 'Morgan');
+GO
 
-SELECT * FROM Customer;
+INSERT INTO Customers (FirstName, LastName) VALUES
+('Angad', 'Minhas'),
+('Arthur', 'Morgan');
+
+GO
+
+SELECT * FROM Customers;
