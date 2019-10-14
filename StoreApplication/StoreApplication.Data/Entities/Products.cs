@@ -9,7 +9,6 @@ namespace StoreApplication.Data.Entities
         {
             Inventory = new HashSet<Inventory>();
             OrderedProducts = new HashSet<OrderedProducts>();
-            Orders = new HashSet<Orders>();
         }
 
         public int ProductId { get; set; }
@@ -18,6 +17,5 @@ namespace StoreApplication.Data.Entities
 
         public virtual ICollection<Inventory> Inventory { get; set; }
         public virtual ICollection<OrderedProducts> OrderedProducts { get; set; }
-        public virtual ICollection<Orders> Orders { get; set; }
     }
 }

@@ -22,13 +22,13 @@ namespace StoreApplication.Data.Entities
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
 
-
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customers>(entity =>
             {
                 entity.HasKey(e => e.CustomerId)
-                    .HasName("PK__Customer__A4AE64D8EB718927");
+                    .HasName("PK__Customer__A4AE64D813D245F5");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -41,23 +41,23 @@ namespace StoreApplication.Data.Entities
 
             modelBuilder.Entity<Inventory>(entity =>
             {
-                entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Inventor__E7FEA49701209330");
-
-                entity.Property(e => e.LocationId).ValueGeneratedNever();
-
                 entity.Property(e => e.Inventory1).HasColumnName("Inventory");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.Inventory)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK__Inventory__Locat__671F4F74");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Inventory__Produ__29221CFB");
+                    .HasConstraintName("FK__Inventory__Produ__681373AD");
             });
 
             modelBuilder.Entity<Locations>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Location__E7FEA4977267AA0B");
+                    .HasName("PK__Location__E7FEA4974E8E23BD");
 
                 entity.Property(e => e.LocationId).ValueGeneratedNever();
 
@@ -69,20 +69,25 @@ namespace StoreApplication.Data.Entities
             modelBuilder.Entity<OrderedProducts>(entity =>
             {
                 entity.HasKey(e => e.CustomerId)
-                    .HasName("PK__OrderedP__A4AE64D81F0A4C71");
+                    .HasName("PK__OrderedP__A4AE64D80188D1FF");
 
                 entity.Property(e => e.CustomerId).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderedProducts)
+                    .HasForeignKey(d => d.OrderId)
+                    .HasConstraintName("FK__OrderedPr__Order__6166761E");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__OrderedPr__Produ__245D67DE");
+                    .HasConstraintName("FK__OrderedPr__Produ__625A9A57");
             });
 
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCF91128376");
+                    .HasName("PK__Orders__C3905BCF192FDCE9");
 
                 entity.Property(e => e.OrderId).ValueGeneratedNever();
 
@@ -91,18 +96,13 @@ namespace StoreApplication.Data.Entities
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__208CD6FA");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Orders__ProductI__2180FB33");
+                    .HasConstraintName("FK__Orders__Customer__5E8A0973");
             });
 
             modelBuilder.Entity<Products>(entity =>
             {
                 entity.HasKey(e => e.ProductId)
-                    .HasName("PK__Products__B40CC6CD54ABDDB9");
+                    .HasName("PK__Products__B40CC6CD8095DCCC");
 
                 entity.Property(e => e.ProductId).ValueGeneratedNever();
 

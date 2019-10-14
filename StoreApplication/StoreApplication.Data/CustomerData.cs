@@ -103,7 +103,7 @@ namespace StoreApplication.Data
 
             using var context = new GameStoreContext(options);
 
-            var foundName = context.Customers.FirstOrDefault(p => p.FirstName == name || p.LastName == name || p.FirstName + p.LastName == name);
+            var foundName = context.Customers.FirstOrDefault(p => p.FirstName == name || p.LastName == name || p.FirstName + " " + p.LastName == name);
 
             if (foundName is null)
             {

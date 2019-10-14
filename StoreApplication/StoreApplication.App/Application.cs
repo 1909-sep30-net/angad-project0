@@ -224,7 +224,7 @@ namespace StoreApplication.App
                         Console.WriteLine("Enter Product Name: ");
                         productName = Console.ReadLine();
 
-                        Console.WriteLine("Enter Product Type: ");
+                        Console.WriteLine("Enter Game Platform: ");
                         productType = Console.ReadLine();
 
                         Console.WriteLine("How many Stores? ");
@@ -241,27 +241,37 @@ namespace StoreApplication.App
                         }
 
                         prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
+                        prodData.AddProductsDB(productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
 
                         Console.WriteLine("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
                         Console.ReadKey();
 
                         break;
                     case 2:
-                        List<Product> tempDisplayProduct = new List<Product>();
-                        tempDisplayProduct = prodData.DisplayProducts(jsonFilePathProducts);
                         Console.Clear();
-                        Console.WriteLine("Products");
-                        if (tempDisplayProduct.Count != 0)
-                        {
-                            for (int i = 0; i < tempDisplayProduct.Count; i++)
-                            {
-                                Console.WriteLine(" {0}. {1} | ID: {2}", i + 1, tempDisplayProduct[i].ProductName, tempDisplayProduct[i].Id);
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("No Data Present");
-                        }
+
+                        #region Serialized Display
+                        //List<Product> tempDisplayProduct = new List<Product>();
+                        //tempDisplayProduct = prodData.DisplayProducts(jsonFilePathProducts);
+                        //Console.Clear();
+                        //Console.WriteLine("Products");
+                        //if (tempDisplayProduct.Count != 0)
+                        //{
+                        //    for (int i = 0; i < tempDisplayProduct.Count; i++)
+                        //    {
+                        //        Console.WriteLine(" {0}. {1} | ID: {2}", i + 1, tempDisplayProduct[i].ProductName, tempDisplayProduct[i].Id);
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("No Data Present");
+                        //}
+                        #endregion
+
+                        ProductData prod = new ProductData();
+                        
+                        prod.DisplayProductsDB();
+
                         Console.WriteLine("Press Any Key To Continue");
                         Console.ReadKey();
                         break;
@@ -303,6 +313,8 @@ namespace StoreApplication.App
                         List<Product> tempDisplayProduct = new List<Product>();
                         List<Customer> tempData = new List<Customer>();
 
+                        #region Serialized Create
+                        /*
                         #region Display+Select Product
                         while (allowedProduct)
                         {
@@ -467,6 +479,160 @@ namespace StoreApplication.App
                         orderData.tempCustData = tempData;
 
                         orderData.CreateOrder(jsonFilePathOrders, jsonFilePathCustomers, jsonFilePathProducts, selectProd, selectCust, citySelect, quant, dateString);
+                        */
+                        #endregion
+
+
+                        #region DB Create
+
+                        List<int> selectedProducts = new List<int>();
+
+                        #region Display+Select Customer
+                        while (allowedCustomer)
+                        {
+                            Console.Clear();
+
+                            Console.Clear();
+                            Console.WriteLine("Customers");
+
+                            dataCustomer.DisplayCustomersDB();
+
+                            Console.WriteLine("Please Select Customer: ");
+                            selectCust = Int32.Parse(Console.ReadLine());
+
+                            /*if (selectCust > dataCustomer.CustomerCount + 1)
+                            {
+                                allowedCustomer = true;
+                                Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
+                                Console.ReadKey();
+                            }
+                            else
+                            {
+                                allowedCustomer = false;
+                            }*/
+                            allowedCustomer = false; //TO BE FIXED
+                        }
+                        #endregion
+
+                        #region Display+Select Product
+                        while (allowedProduct)
+                        {
+                            Console.Clear();
+                            bool doneSelection = false;
+                            int addMore = 1;
+
+                            LocationData loc = new LocationData();
+                            while (!doneSelection)
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Products");
+                                
+                                dataProduct.DisplayProductsDB();
+
+                                Console.WriteLine("Please Select Product ID: ");
+                                selectProd = Int32.Parse(Console.ReadLine());
+
+                                #region Display+Select Location
+                                while (allowedCity)
+                                {
+                                    Console.Clear();
+                                    
+
+                                    loc.DisplayLocationsDB(selectProd);
+
+                                    Console.WriteLine("Select The Location: ");
+                                    citySelect = Int32.Parse(Console.ReadLine());
+
+                                    /*if (citySelect > tempDisplayProduct[selectProd - 1].location.Count + 1)
+                                    {
+                                        allowedCity = true;
+                                        Console.WriteLine("Please Select a Valid City");
+                                    }
+                                    else
+                                    {
+                                        allowedCity = false;
+                                    }*/
+                                    allowedCity = false;
+                                }
+                                #endregion
+
+                                #region  Enter Quantity
+
+                                while (allowedQuant)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Enter the Quantity: ");
+                                    quant = Int32.Parse(Console.ReadLine());
+
+                                    if (quant > loc.GetInventoryDB(citySelect))
+                                    {
+                                        Console.WriteLine("Not Enough Copies left in the Inventory");
+                                        Console.WriteLine("Press Any Key To Try Again");
+                                        Console.ReadKey();
+                                        allowedQuant = true;
+                                    }
+                                    else if (quant > 5)
+                                    {
+                                        Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
+                                        Console.WriteLine("Press Any Key To Try Again");
+                                        Console.ReadKey();
+                                        allowedQuant = true;
+                                    }
+                                    else
+                                    {
+                                        allowedQuant = false;
+                                    }
+                                }
+                                #endregion
+
+                                selectedProducts.Add(selectProd);
+
+                                /*if (selectProd > dataProduct.ProductCount + 1)
+                                {
+                                    allowedProduct = true;
+                                    Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
+                                    Console.ReadKey();
+                                }
+                                else
+                                {
+                                    allowedProduct = false;
+                                }*/
+
+                                Console.WriteLine("Would you like to add more Products?");
+                                Console.WriteLine("1. YES");
+                                Console.WriteLine("2. NO");
+                                Console.WriteLine("Please Enter Your Choice: ");
+                                addMore = Int32.Parse(Console.ReadLine());
+
+                                if (addMore == 1)
+                                {
+                                    doneSelection = false;
+                                }
+                                else if (addMore == 2)
+                                {
+                                    doneSelection = true;
+                                }
+                                else
+                                {
+                                    doneSelection = true;
+                                    Console.WriteLine("Invalid Choice Entered\nNo more products will be added\nPress any key to continue");
+                                    Console.ReadKey();
+                                }
+                            }
+                            allowedProduct = false; //TO BE FIXED
+                        }
+
+                        #endregion                        
+
+                        #region Enter Date
+                        Console.Clear();
+                        Console.WriteLine("Enter Date and Time for the Order: ");
+                        dateString = Console.ReadLine();
+                        #endregion
+
+                        orderData.CreateOrderDB(selectProd, selectCust, citySelect, quant, dateString);
+
+                        #endregion
 
                         Console.Clear();
                         Console.WriteLine("Order Created");
