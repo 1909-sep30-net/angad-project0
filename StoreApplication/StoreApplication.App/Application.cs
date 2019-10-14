@@ -564,7 +564,7 @@ namespace StoreApplication.App
                                     Console.WriteLine("Enter the Quantity: ");
                                     quant = Int32.Parse(Console.ReadLine());
 
-                                    if (quant > loc.GetInventoryDB(citySelect))
+                                    if (quant > loc.GetInventoryDB(citySelect, selectProd))
                                     {
                                         Console.WriteLine("Not Enough Copies left in the Inventory");
                                         Console.WriteLine("Press Any Key To Try Again");
@@ -598,7 +598,7 @@ namespace StoreApplication.App
                                     allowedProduct = false;
                                 }*/
 
-                                Console.WriteLine("Would you like to add more Products?");
+                                /*Console.WriteLine("Would you like to add more Products?");
                                 Console.WriteLine("1. YES");
                                 Console.WriteLine("2. NO");
                                 Console.WriteLine("Please Enter Your Choice: ");
@@ -617,7 +617,9 @@ namespace StoreApplication.App
                                     doneSelection = true;
                                     Console.WriteLine("Invalid Choice Entered\nNo more products will be added\nPress any key to continue");
                                     Console.ReadKey();
-                                }
+                                }*/
+                                addMore = 2;
+                                doneSelection = true;
                             }
                             allowedProduct = false; //TO BE FIXED
                         }

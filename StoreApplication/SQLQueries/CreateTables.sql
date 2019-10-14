@@ -14,13 +14,13 @@ CREATE TABLE Customers (
 );
 
 CREATE TABLE Products (
-  ProductId INT PRIMARY KEY NOT NULL,
+  ProductId INT PRIMARY KEY NOT NULL IDENTITY,
   ProductName VARCHAR(50),
   ProductType VARCHAR(50),
 );
 
 CREATE TABLE Orders (
-  OrderId INT PRIMARY KEY NOT NULL,
+  OrderId INT PRIMARY KEY NOT NULL IDENTITY,
   CustomerId INT FOREIGN KEY REFERENCES Customers(CustomerId),
   OrderDate DATE,
   Quantity INT
@@ -33,7 +33,7 @@ CREATE TABLE OrderedProducts (
 );
 
 CREATE TABLE Locations (
-  LocationId INT PRIMARY KEY NOT NULL,
+  LocationId INT PRIMARY KEY NOT NULL IDENTITY,
   City VARCHAR(50)
 );
 
@@ -49,6 +49,13 @@ GO
 INSERT INTO Customers (FirstName, LastName) VALUES
 ('Angad', 'Minhas'),
 ('Arthur', 'Morgan');
+
+INSERT INTO Locations (City) VALUES
+('LA'),
+('San Diego'),
+('Arlington'),
+('Dallas'),
+('Fort Worth');
 
 GO
 

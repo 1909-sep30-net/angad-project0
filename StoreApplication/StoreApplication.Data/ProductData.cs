@@ -65,8 +65,12 @@ namespace StoreApplication.Data
             prod.ProductName = productName;
             prod.ProductType = productType;
 
-            Random random = new Random();
-            prod.ProductId = random.Next(1000, 9999);
+            context.Products.Add(prod);
+
+            context.SaveChanges();
+
+            /*Random random = new Random();
+            prod.ProductId = random.Next(1000, 9999);*/
 
             for (int i = 0; i < storeCount; i++)
             {
@@ -79,22 +83,20 @@ namespace StoreApplication.Data
 
                 if (foundName is null)
                 {
-                    tempLoc.LocationId = random.Next(1000, 9999);
                     context.Locations.Add(tempLoc);
+                    context.SaveChanges();
                 }
                 else
                 {
                     tempLoc.LocationId = foundName.LocationId;
+                    tempInv.LocationId = tempLoc.LocationId;
+                    tempInv.ProductId = prod.ProductId;
                 }
-                tempInv.LocationId = tempLoc.LocationId;
 
                 tempInv.Inventory1 = storeInventoryList[i];
-                tempInv.ProductId = prod.ProductId;
                 
                 context.Inventory.Add(tempInv);
             }
-
-            context.Products.Add(prod);
 
             context.SaveChanges();
         }

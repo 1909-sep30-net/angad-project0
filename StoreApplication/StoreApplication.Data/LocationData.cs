@@ -22,7 +22,8 @@ namespace StoreApplication.Data
 
             var foundName = context.Inventory.FirstOrDefault(p => p.ProductId == product);
             var foundCity = context.Locations.FirstOrDefault(p => p.LocationId == foundName.LocationId);
-            var foundLoc = context.Inventory.Where(p => p.ProductId == product);
+            
+            var foundLoc = context.Inventory.Where(p => p.ProductId == product).ToList();
 
             if (foundName is null)
             {
@@ -30,20 +31,18 @@ namespace StoreApplication.Data
                 return;
             }
 
-            //Console.WriteLine($"Id: {foundName.LocationId} | City: {foundCity.City}");
-            foreach (Inventory loc in context.Inventory)
+            foreach (Inventory loc in foundLoc)
             {
-                if (loc.ProductId == product)
+                if(loc.ProductId == product)
                 {
-                    foreach (Locations location in context2.Locations)
-                        if (loc.ProductId == product)
-                            Console.WriteLine($"Id: {location.LocationId} | City: {location.City}");
-                    break;
+                    var foundLocName = context.Locations.FirstOrDefault(p => p.LocationId == loc.LocationId);
+                    Console.WriteLine($"Id: {loc.LocationId} | City: {foundLocName.City} | {GetInventoryDB((int)loc.LocationId, product)}");
                 }
             }
+
         }
 
-        public int GetInventoryDB(int location)
+        public int GetInventoryDB(int location, int product)
         {
             string connectionString = SecretConfiguration.configurationString;
 
@@ -53,7 +52,7 @@ namespace StoreApplication.Data
 
             using var context = new GameStoreContext(options);
 
-            var foundName = context.Inventory.FirstOrDefault(p => p.LocationId == location);
+            var foundName = context.Inventory.FirstOrDefault(p => p.LocationId == location && p.ProductId == product);
 
             if (foundName is null)
             {

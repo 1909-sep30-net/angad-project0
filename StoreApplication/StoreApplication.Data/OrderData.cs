@@ -27,8 +27,8 @@ namespace StoreApplication.Data
         public void CreateOrder(string jsonFilePath, string jsonFilePathCustomer, string jsonFilePathProducts, int selectProd, int selectCust, int citySelect, int quant, string dateString)
         {
 
-            Random random = new Random();
-            order.OrderId = random.Next(10000, 99999);
+            /*Random random = new Random();
+            order.OrderId = random.Next(10000, 99999);*/
 
             tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
             product.SerializeJsonToFile(jsonFilePathProducts, tempProdData);
@@ -73,20 +73,21 @@ namespace StoreApplication.Data
             Orders orders = new Orders();
             OrderedProducts orderedProds = new OrderedProducts();
 
-            Random random = new Random();
-            orders.OrderId = random.Next(10000, 99999);
+            /*Random random = new Random();
+            orders.OrderId = random.Next(10000, 99999);*/
 
             orders.CustomerId = selectCust;
             orders.Quantity = quant;
-            orders.OrderDate = DateTime.ParseExact(dateString, "dd/MM/yyyy", null);
+            orders.OrderDate = DateTime.ParseExact(dateString, "MM/dd/yyyy", null);
+
+            context.Orders.Add(orders);
+            context.SaveChanges();
 
             orderedProds.CustomerId = selectCust;
             orderedProds.OrderId = (int)orders.OrderId;
             orderedProds.ProductId = selectProd;
 
-            context.Orders.Add(orders);
             context.OrderedProducts.Add(orderedProds);
-
             context.SaveChanges();
 
         }
