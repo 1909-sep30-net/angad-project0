@@ -92,6 +92,30 @@ namespace StoreApplication.Data
 
         }
 
+        public void DisplayOrdersDB()
+        {
+            string connectionString = SecretConfiguration.configurationString;
+
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+            using var context2 = new GameStoreContext(options);
+            using var context3 = new GameStoreContext(options);
+            using var context4 = new GameStoreContext(options);
+
+            foreach (Orders order in context.Orders)
+            {
+                Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
+                var foundName = context2.Customers.FirstOrDefault(p => p.CustomerId == order.CustomerId);
+                Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
+                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId);
+                var foundProductName = context4.Products.FirstOrDefault(p => p.ProductId == foundProduct.ProductId);
+                Console.Write($"Game Name: {foundProductName.ProductName}\n");
+            }
+        }
+
         public List<Order> DisplayOrders(string jsonFilePath)
         {
             List<Order> tempData = new List<Order>();

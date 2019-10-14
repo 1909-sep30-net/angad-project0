@@ -18,7 +18,6 @@ namespace StoreApplication.Data
                 .Options;
 
             using var context = new GameStoreContext(options);
-            using var context2 = new GameStoreContext(options);
 
             var foundName = context.Inventory.FirstOrDefault(p => p.ProductId == product);
             var foundCity = context.Locations.FirstOrDefault(p => p.LocationId == foundName.LocationId);
@@ -38,6 +37,23 @@ namespace StoreApplication.Data
                     var foundLocName = context.Locations.FirstOrDefault(p => p.LocationId == loc.LocationId);
                     Console.WriteLine($"Id: {loc.LocationId} | City: {foundLocName.City} | {GetInventoryDB((int)loc.LocationId, product)}");
                 }
+            }
+
+        }
+
+        public void DisplayAllLocationsDB()
+        {
+            string connectionString = SecretConfiguration.configurationString;
+
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+
+            foreach (Locations loc in context.Locations)
+            {
+                Console.WriteLine($"Id: {loc.LocationId} | City: {loc.City}");
             }
 
         }

@@ -50,7 +50,7 @@ namespace StoreApplication.Data
 
         }
 
-        public void AddProductsDB(string productName, string productType, string storeLocation, int inventoryForLoc, int storeCount, List<string> storeLocationList, List<int> storeInventoryList)
+        public void AddProductsDB(string productName, string productType, int storeLocation, int inventoryForLoc, int storeCount, List<int> storeLocationList, List<int> storeInventoryList)
         {
             string connectionString = SecretConfiguration.configurationString;
 
@@ -66,32 +66,33 @@ namespace StoreApplication.Data
             prod.ProductType = productType;
 
             context.Products.Add(prod);
-
             context.SaveChanges();
-
-            /*Random random = new Random();
-            prod.ProductId = random.Next(1000, 9999);*/
 
             for (int i = 0; i < storeCount; i++)
             {
                 Locations tempLoc = new Locations();
                 Inventory tempInv = new Inventory();
                 
-                tempLoc.City = storeLocationList[i];
+                tempLoc.LocationId = storeLocationList[i];
                 
-                var foundName = context.Locations.FirstOrDefault(p => p.City == storeLocationList[i]);
+                var foundName = context.Locations.FirstOrDefault(p => p.LocationId == storeLocationList[i]);
+                
+                tempLoc.City = foundName.City;
 
                 if (foundName is null)
                 {
-                    context.Locations.Add(tempLoc);
-                    context.SaveChanges();
+                    //context.Locations.Add(tempLoc);
+                    //context.SaveChanges();
+                    //context.Products.Add(prod);
+                    //context.SaveChanges();
                 }
                 else
                 {
                     tempLoc.LocationId = foundName.LocationId;
                     tempInv.LocationId = tempLoc.LocationId;
-                    tempInv.ProductId = prod.ProductId;
+                    //tempInv.ProductId = prod.ProductId;
                 }
+                tempInv.ProductId = prod.ProductId;
 
                 tempInv.Inventory1 = storeInventoryList[i];
                 

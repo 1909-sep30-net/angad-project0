@@ -217,8 +217,8 @@ namespace StoreApplication.App
                         Console.Clear();
 
                         string productName, productType, storeLocation = "";
-                        int storeCount, inventoryForLoc = 0;
-                        List<string> storeLocationList = new List<string>();
+                        int storeCount, inventoryForLoc = 0, storeLoc = 0;
+                        List<int> storeLocationList = new List<int>();
                         List<int> storeInventoryList = new List<int>();
 
                         Console.WriteLine("Enter Product Name: ");
@@ -230,18 +230,20 @@ namespace StoreApplication.App
                         Console.WriteLine("How many Stores? ");
                         storeCount = Int32.Parse(Console.ReadLine());
 
+                        LocationData loc = new LocationData();
                         for (int i = 0; i < storeCount; i++) // NEED TO FIX SINCE IT'S ONLY INPUTTING THE LAST VALUE
                         {
                             Console.WriteLine("Store Location {0}: ", i + 1);
-                            storeLocation = Console.ReadLine();
-                            storeLocationList.Add(storeLocation);
+                            loc.DisplayAllLocationsDB();
+                            storeLoc = Int32.Parse(Console.ReadLine()); //StoreLocation for String - OLD
+                            storeLocationList.Add(storeLoc);
                             Console.WriteLine("Inventory for the {0} Store", storeLocation);
                             inventoryForLoc = Int32.Parse(Console.ReadLine());
                             storeInventoryList.Add(inventoryForLoc);
                         }
 
-                        prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
-                        prodData.AddProductsDB(productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
+                        //prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
+                        prodData.AddProductsDB(productName, productType, storeLoc, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
 
                         Console.WriteLine("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
                         Console.ReadKey();
@@ -649,6 +651,9 @@ namespace StoreApplication.App
                         displayOrder = orderData.DisplayOrders(jsonFilePathOrders);
 
                         Console.Clear();
+
+                        #region SerializedOutput
+                        /*
                         Console.WriteLine("Orders");
                         if (displayOrder.Count != 0)
                         {
@@ -668,6 +673,14 @@ namespace StoreApplication.App
                         {
                             Console.WriteLine("No Data Present");
                         }
+                        */
+                        #endregion
+
+                        #region DB Output
+
+                        orderData.DisplayOrdersDB();
+
+                        #endregion
 
                         Console.WriteLine("Press Any Key To Continue");
                         Console.ReadKey();
