@@ -10,6 +10,8 @@ namespace StoreApplication.Library
         public int Inventory { get; set; }
         public string City { get; set; }
 
+        public int LocationId { get; set; }
+
         public bool orderSelect { get; set; }
 
     }

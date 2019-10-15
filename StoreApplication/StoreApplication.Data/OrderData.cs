@@ -30,7 +30,7 @@ namespace StoreApplication.Data
             /*Random random = new Random();
             order.OrderId = random.Next(10000, 99999);*/
 
-            tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
+            //tempProdData[selectProd - 1].location[citySelect - 1].Inventory -= quant;
             product.SerializeJsonToFile(jsonFilePathProducts, tempProdData);
 
             order.orderQuantity = quant;
@@ -86,6 +86,7 @@ namespace StoreApplication.Data
             orderedProds.CustomerId = selectCust;
             orderedProds.OrderId = (int)orders.OrderId;
             orderedProds.ProductId = selectProd;
+            orderedProds.LocationId = citySelect;
 
             context.OrderedProducts.Add(orderedProds);
             context.SaveChanges();
@@ -110,7 +111,7 @@ namespace StoreApplication.Data
                 Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
                 var foundName = context2.Customers.FirstOrDefault(p => p.CustomerId == order.CustomerId);
                 Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
-                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId);
+                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId && p.OrderId == order.OrderId);
                 var foundProductName = context4.Products.FirstOrDefault(p => p.ProductId == foundProduct.ProductId);
                 Console.Write($"Game Name: {foundProductName.ProductName}\n");
             }
@@ -131,18 +132,45 @@ namespace StoreApplication.Data
 
             foreach (Orders order in context.Orders)
             {
-                Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
                 var foundName = context2.Customers.FirstOrDefault(p => p.CustomerId == order.CustomerId);
-                Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
-                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId);
+                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId && p.OrderId == order.OrderId);
                 var foundProductName = context4.Products.FirstOrDefault(p => p.ProductId == foundProduct.ProductId);
-                Console.Write($"Game Name: {foundProductName.ProductName}\n");
+
+                if (foundProduct.CustomerId == customerId)
+                {
+                    Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
+                    Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
+                    Console.Write($"Game Name: {foundProductName.ProductName}\n");
+                }
             }
         }
 
-        public void DisplayOrdersStoreDB()
+        public void DisplayOrdersStoreDB(int locationId)
         {
+            string connectionString = SecretConfiguration.configurationString;
 
+            DbContextOptions<GameStoreContext> options = new DbContextOptionsBuilder<GameStoreContext>()
+                .UseSqlServer(connectionString)
+                .Options;
+
+            using var context = new GameStoreContext(options);
+            using var context2 = new GameStoreContext(options);
+            using var context3 = new GameStoreContext(options);
+            using var context4 = new GameStoreContext(options);
+            
+            foreach (Orders order in context.Orders)
+            {
+                var foundName = context2.Customers.FirstOrDefault(p => p.CustomerId == order.CustomerId);
+                var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId && p.OrderId == order.OrderId);
+                var foundProductName = context4.Products.FirstOrDefault(p => p.ProductId == foundProduct.ProductId);
+                
+                if (foundProduct.LocationId == locationId)
+                {
+                    Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
+                    Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
+                    Console.Write($"Game Name: {foundProductName.ProductName} | City: {foundProduct.LocationId}\n");
+                }
+            }
         }
 
         public List<Order> DisplayOrders(string jsonFilePath)

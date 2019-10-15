@@ -9,6 +9,9 @@ namespace StoreApplication.Data
 {
     public class LocationData
     {
+        public int LocationCount { get; set; }
+        public List<int> LocationPresent { get; set; }
+
         public void DisplayLocationsDB(int product)
         {
             string connectionString = SecretConfiguration.configurationString;
@@ -36,8 +39,11 @@ namespace StoreApplication.Data
                 {
                     var foundLocName = context.Locations.FirstOrDefault(p => p.LocationId == loc.LocationId);
                     Console.WriteLine($"Id: {loc.LocationId} | City: {foundLocName.City} | {GetInventoryDB((int)loc.LocationId, product)}");
+                    
                 }
+                //LocationPresent.Add((int)loc.LocationId);
             }
+            
 
         }
 
@@ -55,6 +61,7 @@ namespace StoreApplication.Data
             {
                 Console.WriteLine($"Id: {loc.LocationId} | City: {loc.City}");
             }
+            LocationCount = context.Locations.Count();
 
         }
 

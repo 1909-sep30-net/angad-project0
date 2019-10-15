@@ -1,6 +1,6 @@
 DROP TABLE Inventory;
-DROP TABLE Locations;
 DROP TABLE OrderedProducts;
+DROP TABLE Locations;
 DROP TABLE Orders;
 DROP TABLE Products;
 DROP TABLE Customers;
@@ -19,6 +19,11 @@ CREATE TABLE Products (
   ProductType VARCHAR(50),
 );
 
+CREATE TABLE Locations (
+  LocationId INT PRIMARY KEY NOT NULL IDENTITY,
+  City VARCHAR(50)
+);
+
 CREATE TABLE Orders (
   OrderId INT PRIMARY KEY NOT NULL IDENTITY,
   CustomerId INT FOREIGN KEY REFERENCES Customers(CustomerId),
@@ -30,12 +35,8 @@ CREATE TABLE OrderedProducts (
   OPId INT PRIMARY KEY NOT NULL IDENTITY,
   CustomerId INT FOREIGN KEY REFERENCES Customers(CustomerId),
   OrderId INT FOREIGN KEY REFERENCES Orders(OrderId),
-  ProductId INT FOREIGN KEY REFERENCES Products(ProductId)
-);
-
-CREATE TABLE Locations (
-  LocationId INT PRIMARY KEY NOT NULL IDENTITY,
-  City VARCHAR(50)
+  ProductId INT FOREIGN KEY REFERENCES Products(ProductId),
+  LocationId INT FOREIGN KEY REFERENCES Locations(LocationId)
 );
 
 CREATE TABLE Inventory (
@@ -47,9 +48,9 @@ CREATE TABLE Inventory (
 
 GO
 
-INSERT INTO Customers (FirstName, LastName) VALUES
-('Angad', 'Minhas'),
-('Arthur', 'Morgan');
+--INSERT INTO Customers (FirstName, LastName) VALUES
+--('Angad', 'Minhas'),
+--('Arthur', 'Morgan');
 
 INSERT INTO Locations (City) VALUES
 ('LA'),

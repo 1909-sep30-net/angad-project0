@@ -217,7 +217,7 @@ namespace StoreApplication.App
                         Console.Clear();
 
                         string productName, productType, storeLocation = "";
-                        int storeCount, inventoryForLoc = 0, storeLoc = 0;
+                        int storeCount = 0, inventoryForLoc = 0, storeLoc = 0;
                         List<int> storeLocationList = new List<int>();
                         List<int> storeInventoryList = new List<int>();
 
@@ -227,22 +227,50 @@ namespace StoreApplication.App
                         Console.WriteLine("Enter Game Platform: ");
                         productType = Console.ReadLine();
 
-                        Console.WriteLine("How many Stores? ");
-                        storeCount = Int32.Parse(Console.ReadLine());
-
-                        LocationData loc = new LocationData();
-                        for (int i = 0; i < storeCount; i++) // NEED TO FIX SINCE IT'S ONLY INPUTTING THE LAST VALUE
+                        bool addStore = true;
+                        while (addStore)
                         {
-                            Console.WriteLine("Store Location {0}: ", i + 1);
-                            loc.DisplayAllLocationsDB();
-                            storeLoc = Int32.Parse(Console.ReadLine()); //StoreLocation for String - OLD
-                            storeLocationList.Add(storeLoc);
-                            Console.WriteLine("Inventory for the {0} Store", storeLocation);
-                            inventoryForLoc = Int32.Parse(Console.ReadLine());
-                            storeInventoryList.Add(inventoryForLoc);
+                            Console.WriteLine("How many Stores? [Up to 5]");
+                            storeCount = Int32.Parse(Console.ReadLine());
+                            if(storeCount > 5)
+                            {
+                                Console.WriteLine("Invalid Amount Of Stores");
+                                addStore = true;
+                            }
+                            else
+                            {
+                                addStore = false;
+                            }
                         }
 
-                        //prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
+                        bool selectStore = true;
+                        LocationData loc = new LocationData();
+                        for (int i = 0; i < storeCount; i++) 
+                        {
+                            while (selectStore)
+                            {
+                                Console.WriteLine("Store Location {0}: ", i + 1);
+                                loc.DisplayAllLocationsDB();
+                                storeLoc = Int32.Parse(Console.ReadLine());
+                                if(storeLoc > 5)
+                                {
+                                    Console.WriteLine("Invalid Store");
+                                    selectStore = true;
+                                }
+                                else
+                                {
+                                    selectStore = false;
+                                }
+                            }
+                            storeLocationList.Add(storeLoc);
+                            Console.WriteLine("Inventory for the Store {0}", i + 1);
+                            inventoryForLoc = Int32.Parse(Console.ReadLine());
+                            storeInventoryList.Add(inventoryForLoc);
+                            selectStore = true;
+
+                        }
+
+                        prodData.AddProducts(jsonFilePathProducts, productName, productType, storeLocation, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
                         prodData.AddProductsDB(productName, productType, storeLoc, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
 
                         Console.WriteLine("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
@@ -294,10 +322,9 @@ namespace StoreApplication.App
                 Console.Clear();
                 Console.WriteLine("1. Create an Order");
                 Console.WriteLine("2. View All Orders");
-                Console.WriteLine("3. Display Order by Index");
+                Console.WriteLine("3. Display Order History of a Customer");
                 Console.WriteLine("4. Display Order History of a Store Location");
-                Console.WriteLine("5. Display Order History of a Customer");
-                Console.WriteLine("6+. Go Back");
+                Console.WriteLine("5+. Go Back");
 
                 Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
@@ -484,7 +511,6 @@ namespace StoreApplication.App
                         */
                         #endregion
 
-
                         #region DB Create
 
                         List<int> selectedProducts = new List<int>();
@@ -502,7 +528,7 @@ namespace StoreApplication.App
                             Console.WriteLine("Please Select Customer: ");
                             selectCust = Int32.Parse(Console.ReadLine());
 
-                            /*if (selectCust > dataCustomer.CustomerCount + 1)
+                            if (selectCust > dataCustomer.CustomerCount)
                             {
                                 allowedCustomer = true;
                                 Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
@@ -511,122 +537,96 @@ namespace StoreApplication.App
                             else
                             {
                                 allowedCustomer = false;
-                            }*/
-                            allowedCustomer = false; //TO BE FIXED
+                            }
                         }
                         #endregion
 
                         #region Display+Select Product
+
+                        Console.Clear();
+
+                        LocationData locat = new LocationData();
+
                         while (allowedProduct)
                         {
                             Console.Clear();
-                            bool doneSelection = false;
-                            int addMore = 1;
+                            Console.WriteLine("Products");
 
-                            LocationData loc = new LocationData();
-                            while (!doneSelection)
+                            dataProduct.DisplayProductsDB();
+
+                            Console.WriteLine("Please Select Product ID: ");
+                            selectProd = Int32.Parse(Console.ReadLine());
+
+                            if (selectProd > dataProduct.ProductCount)
                             {
-                                Console.Clear();
-                                Console.WriteLine("Products");
-                                
-                                dataProduct.DisplayProductsDB();
-
-                                Console.WriteLine("Please Select Product ID: ");
-                                selectProd = Int32.Parse(Console.ReadLine());
-
-                                #region Display+Select Location
-                                while (allowedCity)
-                                {
-                                    Console.Clear();
-                                    
-
-                                    loc.DisplayLocationsDB(selectProd);
-
-                                    Console.WriteLine("Select The Location: ");
-                                    citySelect = Int32.Parse(Console.ReadLine());
-
-                                    /*if (citySelect > tempDisplayProduct[selectProd - 1].location.Count + 1)
-                                    {
-                                        allowedCity = true;
-                                        Console.WriteLine("Please Select a Valid City");
-                                    }
-                                    else
-                                    {
-                                        allowedCity = false;
-                                    }*/
-                                    allowedCity = false;
-                                }
-                                #endregion
-
-                                #region  Enter Quantity
-
-                                while (allowedQuant)
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine("Enter the Quantity: ");
-                                    quant = Int32.Parse(Console.ReadLine());
-
-                                    if (quant > loc.GetInventoryDB(citySelect, selectProd))
-                                    {
-                                        Console.WriteLine("Not Enough Copies left in the Inventory");
-                                        Console.WriteLine("Press Any Key To Try Again");
-                                        Console.ReadKey();
-                                        allowedQuant = true;
-                                    }
-                                    else if (quant > 5)
-                                    {
-                                        Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
-                                        Console.WriteLine("Press Any Key To Try Again");
-                                        Console.ReadKey();
-                                        allowedQuant = true;
-                                    }
-                                    else
-                                    {
-                                        allowedQuant = false;
-                                    }
-                                }
-                                #endregion
-
-                                selectedProducts.Add(selectProd);
-
-                                /*if (selectProd > dataProduct.ProductCount + 1)
-                                {
-                                    allowedProduct = true;
-                                    Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
-                                    Console.ReadKey();
-                                }
-                                else
-                                {
-                                    allowedProduct = false;
-                                }*/
-
-                                /*Console.WriteLine("Would you like to add more Products?");
-                                Console.WriteLine("1. YES");
-                                Console.WriteLine("2. NO");
-                                Console.WriteLine("Please Enter Your Choice: ");
-                                addMore = Int32.Parse(Console.ReadLine());
-
-                                if (addMore == 1)
-                                {
-                                    doneSelection = false;
-                                }
-                                else if (addMore == 2)
-                                {
-                                    doneSelection = true;
-                                }
-                                else
-                                {
-                                    doneSelection = true;
-                                    Console.WriteLine("Invalid Choice Entered\nNo more products will be added\nPress any key to continue");
-                                    Console.ReadKey();
-                                }*/
-                                addMore = 2;
-                                doneSelection = true;
+                                allowedProduct = true;
+                                Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
+                                Console.ReadKey();
                             }
-                            allowedProduct = false; //TO BE FIXED
+                            else
+                            {
+                                allowedProduct = false;
+                            }
                         }
 
-                        #endregion                        
+                        #region Display+Select Location
+                        while (allowedCity)
+                        {
+                            Console.Clear();
+
+
+                            locat.DisplayLocationsDB(selectProd);
+
+                            Console.WriteLine("Select The Location: ");
+                            citySelect = Int32.Parse(Console.ReadLine());
+
+                            /*//if (citySelect > locat.LocationCount)
+                            if (locat.LocationPresent.Contains(citySelect)) 
+                            {
+                                allowedCity = true;
+                                Console.WriteLine("Please Select a Valid City");
+                            }
+                            else
+                            {
+                                allowedCity = false;
+                            }*/
+                            allowedCity = false; //TO BE FIXED
+                        }
+                        #endregion
+
+                        //ADD CODE TO REDUCE QUANTITY FROM THE SELECTED STORE
+                        #region  Enter Quantity
+
+                        while (allowedQuant)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Enter the Quantity: ");
+                            quant = Int32.Parse(Console.ReadLine());
+
+                            if (quant > locat.GetInventoryDB(citySelect, selectProd))
+                            {
+                                Console.WriteLine("Not Enough Copies left in the Inventory");
+                                Console.WriteLine("Press Any Key To Try Again");
+                                Console.ReadKey();
+                                allowedQuant = true;
+                            }
+                            else if (quant > 5)
+                            {
+                                Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
+                                Console.WriteLine("Press Any Key To Try Again");
+                                Console.ReadKey();
+                                allowedQuant = true;
+                            }
+                            else
+                            {
+                                allowedQuant = false;
+                            }
+                        }
+                        #endregion
+
+                        selectedProducts.Add(selectProd);
+
+                        #endregion
 
                         #region Enter Date
                         Console.Clear();
@@ -686,17 +686,42 @@ namespace StoreApplication.App
                         Console.ReadKey();
                         break;
                     case 3:
+                        Console.Clear();
 
+                        int customerId = 0;
+                        CustomerData cust = new CustomerData();
+                        OrderData dispOrder = new OrderData();
+
+                        Console.WriteLine("Customers");
+                        cust.DisplayCustomersDB();
+                        Console.WriteLine("Please Enter The Customer ID: ");
+                        customerId = Int32.Parse(Console.ReadLine());
+
+                        dispOrder.DisplayOrdersCustomerDB(customerId);
+
+                        Console.WriteLine("Press Any Key To Continue");
+                        Console.ReadKey();
                         break;
                     case 4:
+                        Console.Clear();
 
-                        break;
-                    case 5:
+                        int locationId = 0;
+                        LocationData loc = new LocationData();
+                        OrderData orderLoc = new OrderData();
 
+                        Console.WriteLine("Locations");
+                        loc.DisplayAllLocationsDB();
+                        Console.WriteLine("Please Enter The Location ID: ");
+                        locationId = Int32.Parse(Console.ReadLine());
+
+                        orderLoc.DisplayOrdersStoreDB(locationId);
+
+                        Console.WriteLine("Press Any Key To Continue");
+                        Console.ReadKey();
                         break;
                 }
 
-            } while (menuChoice < 6);
+            } while (menuChoice < 5);
 
         }
 

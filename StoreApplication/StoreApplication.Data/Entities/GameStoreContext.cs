@@ -22,12 +22,13 @@ namespace StoreApplication.Data.Entities
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customers>(entity =>
             {
                 entity.HasKey(e => e.CustomerId)
-                    .HasName("PK__Customer__A4AE64D8EA3995E4");
+                    .HasName("PK__Customer__A4AE64D8996736AA");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -45,18 +46,18 @@ namespace StoreApplication.Data.Entities
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Inventory__Locat__2AA05119");
+                    .HasConstraintName("FK__Inventory__Locat__278EDA44");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Inventory__Produ__2B947552");
+                    .HasConstraintName("FK__Inventory__Produ__2882FE7D");
             });
 
             modelBuilder.Entity<Locations>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Location__E7FEA497D79932F7");
+                    .HasName("PK__Location__E7FEA49761DD256F");
 
                 entity.Property(e => e.City)
                     .HasMaxLength(50)
@@ -66,43 +67,48 @@ namespace StoreApplication.Data.Entities
             modelBuilder.Entity<OrderedProducts>(entity =>
             {
                 entity.HasKey(e => e.Opid)
-                    .HasName("PK__OrderedP__AE2CBEFE24121A14");
+                    .HasName("PK__OrderedP__AE2CBEFEBDE46CE4");
 
                 entity.Property(e => e.Opid).HasColumnName("OPId");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__OrderedPr__Custo__23F3538A");
+                    .HasConstraintName("FK__OrderedPr__Custo__21D600EE");
+
+                entity.HasOne(d => d.Location)
+                    .WithMany(p => p.OrderedProducts)
+                    .HasForeignKey(d => d.LocationId)
+                    .HasConstraintName("FK__OrderedPr__Locat__24B26D99");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__OrderedPr__Order__24E777C3");
+                    .HasConstraintName("FK__OrderedPr__Order__22CA2527");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__OrderedPr__Produ__25DB9BFC");
+                    .HasConstraintName("FK__OrderedPr__Produ__23BE4960");
             });
 
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCF943E27E1");
+                    .HasName("PK__Orders__C3905BCFF9ACD538");
 
                 entity.Property(e => e.OrderDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__2116E6DF");
+                    .HasConstraintName("FK__Orders__Customer__1EF99443");
             });
 
             modelBuilder.Entity<Products>(entity =>
             {
                 entity.HasKey(e => e.ProductId)
-                    .HasName("PK__Products__B40CC6CDE272A022");
+                    .HasName("PK__Products__B40CC6CDF1013252");
 
                 entity.Property(e => e.ProductName)
                     .HasMaxLength(50)

@@ -90,7 +90,7 @@ namespace StoreApplication.Data
             {
                 Console.WriteLine($"Id: {customer.CustomerId} | Name: {customer.FirstName} {customer.LastName}");
             }
-
+            CustomerCount = context.Customers.Count();
         }
 
         public void SearchCustomersDB(string name)
