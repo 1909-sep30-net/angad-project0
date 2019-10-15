@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using StoreApplication.Library;
 using StoreApplication.Data;
+using Serilog;
 
 namespace StoreApplication.App
 {
@@ -14,12 +15,27 @@ namespace StoreApplication.App
 
         static void Main(string[] args)
         {
-
+            Log.Logger = new LoggerConfiguration().WriteTo.File(@"C:\revature\angad-project0\StoreApplication\LOGData\LogInfo.txt").CreateLogger();
+            Log.Information("Initalizing Application");
             int userChoice = 0;
-
             do
             {
-                MainMenu(userChoice);
+                try
+                {
+
+                    MainMenu(userChoice);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine("Please Enter Only Numeric Values");
+                    Console.WriteLine("Exception: {0}", ex);
+                    Log.Information("Exception: {0}", ex);
+                    Console.ReadKey();
+                }
+                finally
+                {
+                    userChoice = 0;
+                }
             } while (userChoice != 3);
 
         }
@@ -37,6 +53,8 @@ namespace StoreApplication.App
             Console.WriteLine("\nPlease Enter Your Choice: ");
             choice = Int32.Parse(Console.ReadLine());
 
+            Log.Information("Main Menu Choice: {0}", choice);
+
             switch (choice)
             {
                 case 1:
@@ -51,6 +69,7 @@ namespace StoreApplication.App
                 default:
                     Console.WriteLine("Wrong Choice Entered");
                     Console.WriteLine("Press Any Key To Continue");
+                    Log.Information("Entered Wrong Choice On Main Menu");
                     Console.ReadKey();
                     break;
             }
@@ -72,6 +91,7 @@ namespace StoreApplication.App
 
                 Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
+                Log.Information("Customer Menu Choice: {0}", menuChoice);
 
                 switch (menuChoice)
                 {
@@ -82,6 +102,7 @@ namespace StoreApplication.App
                         Console.WriteLine("Add Customer\n");
                         Console.WriteLine("Enter The Name: ");
                         fullName = Console.ReadLine();
+                        Log.Information("Added Customer: {0}", fullName);
 
                         custData.AddCustomer(jsonFilePathCustomers, fullName); //SERIALIZED
                         custData.AddCustomerDB(fullName); //DATABASE
@@ -181,6 +202,7 @@ namespace StoreApplication.App
 
                 Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
+                Log.Information("Store Management Menu Choice: {0}", menuChoice);
 
                 switch (menuChoice)
                 {
@@ -210,6 +232,7 @@ namespace StoreApplication.App
 
                 Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
+                Log.Information("Manage Products Menu Choice: {0}", menuChoice);
 
                 switch (menuChoice)
                 {
@@ -223,9 +246,11 @@ namespace StoreApplication.App
 
                         Console.WriteLine("Enter Product Name: ");
                         productName = Console.ReadLine();
+                        Log.Information("Entered Product Name: {0}", productName);
 
                         Console.WriteLine("Enter Game Platform: ");
                         productType = Console.ReadLine();
+                        Log.Information("Entered Product Type: {0}", productType);
 
                         bool addStore = true;
                         while (addStore)
@@ -235,6 +260,7 @@ namespace StoreApplication.App
                             if(storeCount > 5)
                             {
                                 Console.WriteLine("Invalid Amount Of Stores");
+                                Log.Information("Invalide Amount Of Stores. Amount Entered: {0}", storeCount);
                                 addStore = true;
                             }
                             else
@@ -252,9 +278,11 @@ namespace StoreApplication.App
                                 Console.WriteLine("Store Location {0}: ", i + 1);
                                 loc.DisplayAllLocationsDB();
                                 storeLoc = Int32.Parse(Console.ReadLine());
-                                if(storeLoc > 5)
+                                Log.Information("Entered Location: {0}", storeLoc);
+                                if (storeLoc > 5)
                                 {
                                     Console.WriteLine("Invalid Store");
+                                    Log.Information("Invalide Store. Entered: {0}", storeLoc);
                                     selectStore = true;
                                 }
                                 else
@@ -265,6 +293,7 @@ namespace StoreApplication.App
                             storeLocationList.Add(storeLoc);
                             Console.WriteLine("Inventory for the Store {0}", i + 1);
                             inventoryForLoc = Int32.Parse(Console.ReadLine());
+                            Log.Information("Inventory for Location {0}", inventoryForLoc);
                             storeInventoryList.Add(inventoryForLoc);
                             selectStore = true;
 
@@ -274,6 +303,7 @@ namespace StoreApplication.App
                         prodData.AddProductsDB(productName, productType, storeLoc, inventoryForLoc, storeCount, storeLocationList, storeInventoryList);
 
                         Console.WriteLine("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
+                        Log.Information("Added Product {0} of type {1} to {2} stores", productName, productType, storeCount);
                         Console.ReadKey();
 
                         break;
@@ -328,6 +358,7 @@ namespace StoreApplication.App
 
                 Console.WriteLine("\nEnter Your Choice: ");
                 menuChoice = Int32.Parse(Console.ReadLine());
+                Log.Information("Order Menu Choice {0}", menuChoice);
 
                 switch (menuChoice)
                 {
@@ -335,9 +366,10 @@ namespace StoreApplication.App
 
                         int selectProd = 0, selectCust = 0, citySelect = 0;
                         int quant = 0;
-                        string dateString;
+                        string dateString = "";
 
                         bool allowedCity = true, allowedQuant = true, allowedProduct = true, allowedCustomer = true;
+                        bool dateFormat = false, caughException = false;
                         
                         List<Product> tempDisplayProduct = new List<Product>();
                         List<Customer> tempData = new List<Customer>();
@@ -527,11 +559,13 @@ namespace StoreApplication.App
 
                             Console.WriteLine("Please Select Customer: ");
                             selectCust = Int32.Parse(Console.ReadLine());
+                            Log.Information("Selected Customer: {0}", selectCust);
 
                             if (selectCust > dataCustomer.CustomerCount)
                             {
                                 allowedCustomer = true;
                                 Console.WriteLine("Selected an Invalid Customer. Press any key to Try Again.");
+                                Log.Information("Invalid Customer Selected [{0}]", selectCust);
                                 Console.ReadKey();
                             }
                             else
@@ -556,11 +590,13 @@ namespace StoreApplication.App
 
                             Console.WriteLine("Please Select Product ID: ");
                             selectProd = Int32.Parse(Console.ReadLine());
+                            Log.Information("Selected Product: {0}", selectProd);
 
                             if (selectProd > dataProduct.ProductCount)
                             {
                                 allowedProduct = true;
                                 Console.WriteLine("Selected an Invalid Product. Press any key to Try Again.");
+                                Log.Information("Invalid Product Selected [{0}]", selectProd);
                                 Console.ReadKey();
                             }
                             else
@@ -579,6 +615,7 @@ namespace StoreApplication.App
 
                             Console.WriteLine("Select The Location: ");
                             citySelect = Int32.Parse(Console.ReadLine());
+                            Log.Information("Selected Location [{0}]", citySelect);
 
                             /*//if (citySelect > locat.LocationCount)
                             if (locat.LocationPresent.Contains(citySelect)) 
@@ -602,11 +639,13 @@ namespace StoreApplication.App
                             Console.Clear();
                             Console.WriteLine("Enter the Quantity: ");
                             quant = Int32.Parse(Console.ReadLine());
+                            Log.Information("Selected Quantity: [{0}]", quant);
 
                             if (quant > locat.GetInventoryDB(citySelect, selectProd))
                             {
                                 Console.WriteLine("Not Enough Copies left in the Inventory");
                                 Console.WriteLine("Press Any Key To Try Again");
+                                Log.Information("Invalid Quantity Entered. Your Quantity: [{0}]", quant);
                                 Console.ReadKey();
                                 allowedQuant = true;
                             }
@@ -614,6 +653,7 @@ namespace StoreApplication.App
                             {
                                 Console.WriteLine("Enter a Valid Quantity [Order Limit: 5]");
                                 Console.WriteLine("Press Any Key To Try Again");
+                                Log.Information("Quantity Can Not Be More Than 5. Your Quantity: [{0}]", quant);
                                 Console.ReadKey();
                                 allowedQuant = true;
                             }
@@ -629,9 +669,29 @@ namespace StoreApplication.App
                         #endregion
 
                         #region Enter Date
-                        Console.Clear();
-                        Console.WriteLine("Enter Date and Time for the Order: ");
-                        dateString = Console.ReadLine();
+                        while (dateFormat == false)
+                        {
+                            try
+                            {
+                                Console.Clear();
+                                Console.WriteLine("Enter Date and Time for the Order: ");
+                                dateString = Console.ReadLine();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine("Date Not in Correct Format");
+                                Console.WriteLine("Exception: {0}", ex);
+                                Log.Information("Exception: {0}", ex);
+                                caughException = true;
+                            }
+                            finally
+                            {
+                                if (caughException)
+                                    dateFormat = false;
+                                else
+                                    dateFormat = true;
+                            }
+                        }
                         #endregion
 
                         orderData.CreateOrderDB(selectProd, selectCust, citySelect, quant, dateString);
@@ -640,13 +700,13 @@ namespace StoreApplication.App
 
                         Console.Clear();
                         Console.WriteLine("Order Created");
+                        Log.Information("Order Created");
                         Console.ReadKey();
                         break;
 
                     case 2:
 
                         List<Order> displayOrder = new List<Order>();
-                        string storeLocation = "";
 
                         displayOrder = orderData.DisplayOrders(jsonFilePathOrders);
 

@@ -1,0 +1,18 @@
+2019-10-15 09:23:28.477 -05:00 [INF] Initalizing Application
+2019-10-15 09:23:29.852 -05:00 [INF] Exception: System.FormatException: Input string was not in a correct format.
+   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Number.ParseInt32(ReadOnlySpan`1 value, NumberStyles styles, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at StoreApplication.App.Application.MainMenu(Int32 choice) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 55
+   at StoreApplication.App.Application.Main(String[] args) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 26
+2019-10-15 09:39:41.937 -05:00 [INF] Initalizing Application
+2019-10-15 09:39:45.472 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 09:39:46.552 -05:00 [INF] Customer Menu Choice: 1
+2019-10-15 09:39:55.023 -05:00 [INF] Customer Menu Choice: 4
+2019-10-15 09:39:55.744 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 09:40:45.839 -05:00 [INF] Initalizing Application
+2019-10-15 09:40:46.615 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 09:40:47.581 -05:00 [INF] Customer Menu Choice: 1
+2019-10-15 09:40:51.919 -05:00 [INF] Added Customer: Ansimi Nation
+2019-10-15 09:40:55.890 -05:00 [INF] Customer Menu Choice: 4
+2019-10-15 09:40:56.349 -05:00 [INF] Main Menu Choice: 3
