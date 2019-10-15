@@ -7,6 +7,7 @@ namespace StoreApplication.Data.Entities
     {
         public Customers()
         {
+            OrderedProducts = new HashSet<OrderedProducts>();
             Orders = new HashSet<Orders>();
         }
 
@@ -14,6 +15,7 @@ namespace StoreApplication.Data.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
+        public virtual ICollection<OrderedProducts> OrderedProducts { get; set; }
         public virtual ICollection<Orders> Orders { get; set; }
     }
 }

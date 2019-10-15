@@ -27,7 +27,8 @@ CREATE TABLE Orders (
 );
 
 CREATE TABLE OrderedProducts (
-  CustomerId INT PRIMARY KEY NOT NULL,
+  OPId INT PRIMARY KEY NOT NULL IDENTITY,
+  CustomerId INT FOREIGN KEY REFERENCES Customers(CustomerId),
   OrderId INT FOREIGN KEY REFERENCES Orders(OrderId),
   ProductId INT FOREIGN KEY REFERENCES Products(ProductId)
 );
