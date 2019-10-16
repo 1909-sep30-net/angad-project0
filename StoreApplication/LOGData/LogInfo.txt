@@ -16,3 +16,146 @@
 2019-10-15 09:40:51.919 -05:00 [INF] Added Customer: Ansimi Nation
 2019-10-15 09:40:55.890 -05:00 [INF] Customer Menu Choice: 4
 2019-10-15 09:40:56.349 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 09:52:17.223 -05:00 [INF] Initalizing Application
+2019-10-15 09:52:18.456 -05:00 [INF] Main Menu Choice: 2
+2019-10-15 09:52:19.268 -05:00 [INF] Store Management Menu Choice: 2
+2019-10-15 09:52:20.093 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 09:52:24.405 -05:00 [INF] Manage Products Menu Choice: 1
+2019-10-15 09:52:29.689 -05:00 [INF] Entered Product Name: RDR2
+2019-10-15 09:52:31.318 -05:00 [INF] Entered Product Type: PC
+2019-10-15 09:52:36.028 -05:00 [INF] Entered Location: 3
+2019-10-15 09:52:36.930 -05:00 [INF] Inventory for Location 2
+2019-10-15 09:52:37.573 -05:00 [INF] Entered Location: 3
+2019-10-15 09:52:38.431 -05:00 [INF] Inventory for Location 4
+2019-10-15 09:52:39.136 -05:00 [INF] Entered Location: 2
+2019-10-15 09:52:39.895 -05:00 [INF] Inventory for Location 1
+2019-10-15 09:52:40.978 -05:00 [INF] Added Product RDR2 of type PC to 3 stores
+2019-10-15 09:53:01.729 -05:00 [INF] Manage Products Menu Choice: 3
+2019-10-15 09:53:02.320 -05:00 [INF] Store Management Menu Choice: 3
+2019-10-15 09:53:02.843 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 11:35:47.086 -05:00 [INF] Initalizing Application
+2019-10-15 13:01:12.927 -05:00 [INF] Initalizing Application
+2019-10-15 13:01:16.069 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 13:01:25.774 -05:00 [INF] Initalizing Application
+2019-10-15 13:01:29.182 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 13:02:52.445 -05:00 [INF] Initalizing Application
+2019-10-15 13:02:56.241 -05:00 [INF] Exception: System.FormatException: Input string was not in a correct format.
+   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Number.ParseInt32(ReadOnlySpan`1 value, NumberStyles styles, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at StoreApplication.App.Application.MainMenu(Int32 choice) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 54
+   at StoreApplication.App.Application.Main(String[] args) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 26
+2019-10-15 13:03:00.231 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 13:03:04.180 -05:00 [INF] Customer Menu Choice: 4
+2019-10-15 13:03:04.780 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 14:02:50.132 -05:00 [INF] Initalizing Application
+2019-10-15 14:44:47.851 -05:00 [INF] Initalizing Application
+2019-10-15 14:45:05.789 -05:00 [INF] Initalizing Application
+2019-10-15 15:25:35.489 -05:00 [INF] Initalizing Application
+2019-10-15 15:25:37.751 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 15:25:38.316 -05:00 [INF] Customer Menu Choice: 2
+2019-10-15 15:25:47.165 -05:00 [INF] Customer Menu Choice: 3
+2019-10-15 15:25:55.499 -05:00 [INF] Customer Menu Choice: 4
+2019-10-15 15:26:00.621 -05:00 [INF] Main Menu Choice: 2
+2019-10-15 15:26:01.601 -05:00 [INF] Store Management Menu Choice: 2
+2019-10-15 15:26:05.135 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 15:26:07.136 -05:00 [INF] Manage Products Menu Choice: 1
+2019-10-15 15:26:11.000 -05:00 [INF] Entered Product Name: Minecraft
+2019-10-15 15:26:12.463 -05:00 [INF] Entered Product Type: PC
+2019-10-15 15:26:14.531 -05:00 [INF] Entered Location: 1
+2019-10-15 15:26:15.002 -05:00 [INF] Inventory for Location 2
+2019-10-15 15:26:15.538 -05:00 [INF] Entered Location: 2
+2019-10-15 15:26:15.974 -05:00 [INF] Inventory for Location 3
+2019-10-15 15:26:17.331 -05:00 [INF] Added Product Minecraft of type PC to 2 stores
+2019-10-15 15:26:19.770 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 15:26:24.614 -05:00 [INF] Manage Products Menu Choice: 3
+2019-10-15 15:26:30.219 -05:00 [INF] Store Management Menu Choice: 1
+2019-10-15 15:26:33.545 -05:00 [INF] Order Menu Choice 2
+2019-10-15 15:26:37.046 -05:00 [INF] Order Menu Choice 3
+2019-10-15 15:26:46.695 -05:00 [INF] Order Menu Choice 4
+2019-10-15 15:26:50.042 -05:00 [INF] Order Menu Choice 5
+2019-10-15 15:26:50.933 -05:00 [INF] Store Management Menu Choice: 3
+2019-10-15 15:26:51.879 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 16:46:12.544 -05:00 [INF] Initalizing Application
+2019-10-15 17:59:55.128 -05:00 [INF] Initalizing Application
+2019-10-15 17:59:57.785 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 17:59:58.390 -05:00 [INF] Customer Menu Choice: 2
+2019-10-15 18:00:07.470 -05:00 [INF] Customer Menu Choice: 4
+2019-10-15 18:00:08.554 -05:00 [INF] Main Menu Choice: 3
+2019-10-15 18:36:08.744 -05:00 [INF] Initalizing Application
+2019-10-15 18:36:17.745 -05:00 [INF] Main Menu Choice: 1
+2019-10-15 18:36:32.727 -05:00 [INF] Customer Menu Choice: 2
+2019-10-15 18:36:51.574 -05:00 [INF] Customer Menu Choice: 2
+2019-10-15 18:36:55.961 -05:00 [INF] Customer Menu Choice: 3
+2019-10-15 18:37:01.403 -05:00 [INF] Customer Menu Choice: 3
+2019-10-15 18:37:06.750 -05:00 [INF] Customer Menu Choice: 3
+2019-10-15 18:37:13.621 -05:00 [INF] Customer Menu Choice: 1
+2019-10-15 18:37:16.284 -05:00 [INF] Added Customer: John Marston
+2019-10-15 18:37:19.146 -05:00 [INF] Customer Menu Choice: 2
+2019-10-15 18:37:27.383 -05:00 [INF] Exception: System.FormatException: Input string was not in a correct format.
+   at System.Number.ThrowOverflowOrFormatException(ParsingStatus status, TypeCode type)
+   at System.Number.ParseInt32(ReadOnlySpan`1 value, NumberStyles styles, NumberFormatInfo info)
+   at System.Int32.Parse(String s)
+   at StoreApplication.App.Application.CustomersMenu() in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 93
+   at StoreApplication.App.Application.MainMenu(Int32 choice) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 61
+   at StoreApplication.App.Application.Main(String[] args) in C:\Revature\angad-project0\StoreApplication\StoreApplication.App\Application.cs:line 26
+2019-10-15 18:45:06.165 -05:00 [INF] Main Menu Choice: 2
+2019-10-15 18:45:14.226 -05:00 [INF] Store Management Menu Choice: 2
+2019-10-15 18:45:33.840 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 18:45:35.577 -05:00 [INF] Manage Products Menu Choice: 1
+2019-10-15 18:45:39.281 -05:00 [INF] Entered Product Name: Death Stranding
+2019-10-15 18:45:40.861 -05:00 [INF] Entered Product Type: PS4
+2019-10-15 18:45:45.662 -05:00 [INF] Entered Location: 1
+2019-10-15 18:45:47.740 -05:00 [INF] Inventory for Location 50
+2019-10-15 18:45:49.687 -05:00 [INF] Entered Location: 3
+2019-10-15 18:45:51.733 -05:00 [INF] Inventory for Location 20
+2019-10-15 18:45:53.449 -05:00 [INF] Added Product Death Stranding of type PS4 to 2 stores
+2019-10-15 18:45:57.420 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 18:45:59.608 -05:00 [INF] Manage Products Menu Choice: 1
+2019-10-15 18:46:05.570 -05:00 [INF] Entered Product Name: Red Dead Redemption 2
+2019-10-15 18:46:06.934 -05:00 [INF] Entered Product Type: PC
+2019-10-15 18:46:10.300 -05:00 [INF] Entered Location: 1
+2019-10-15 18:46:12.357 -05:00 [INF] Inventory for Location 20
+2019-10-15 18:46:14.608 -05:00 [INF] Entered Location: 4
+2019-10-15 18:46:16.742 -05:00 [INF] Inventory for Location 35
+2019-10-15 18:46:18.685 -05:00 [INF] Entered Location: 5
+2019-10-15 18:46:20.655 -05:00 [INF] Inventory for Location 7
+2019-10-15 18:46:21.409 -05:00 [INF] Added Product Red Dead Redemption 2 of type PC to 3 stores
+2019-10-15 18:46:24.557 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 18:46:27.104 -05:00 [INF] Manage Products Menu Choice: 2
+2019-10-15 18:46:30.076 -05:00 [INF] Manage Products Menu Choice: 3
+2019-10-15 18:46:31.722 -05:00 [INF] Store Management Menu Choice: 1
+2019-10-15 18:46:33.382 -05:00 [INF] Order Menu Choice 2
+2019-10-15 18:46:34.813 -05:00 [INF] Order Menu Choice 1
+2019-10-15 18:46:40.905 -05:00 [INF] Selected Customer: 3
+2019-10-15 18:46:43.683 -05:00 [INF] Selected Product: 1
+2019-10-15 18:46:50.531 -05:00 [INF] Selected Location [1]
+2019-10-15 18:46:54.578 -05:00 [INF] Selected Quantity: [200]
+2019-10-15 18:46:54.612 -05:00 [INF] Invalid Quantity Entered. Your Quantity: [200]
+2019-10-15 18:47:01.191 -05:00 [INF] Selected Quantity: [6]
+2019-10-15 18:47:01.226 -05:00 [INF] Quantity Can Not Be More Than 5. Your Quantity: [6]
+2019-10-15 18:47:09.044 -05:00 [INF] Selected Quantity: [2]
+2019-10-15 18:47:12.747 -05:00 [INF] Order Created
+2019-10-15 18:47:15.254 -05:00 [INF] Order Menu Choice 2
+2019-10-15 18:47:23.523 -05:00 [INF] Order Menu Choice 1
+2019-10-15 18:47:27.911 -05:00 [INF] Selected Customer: 3
+2019-10-15 18:47:29.492 -05:00 [INF] Selected Product: 2
+2019-10-15 18:47:31.736 -05:00 [INF] Selected Location [4]
+2019-10-15 18:47:34.711 -05:00 [INF] Selected Quantity: [1]
+2019-10-15 18:47:38.027 -05:00 [INF] Order Created
+2019-10-15 18:47:41.281 -05:00 [INF] Order Menu Choice 2
+2019-10-15 18:47:49.791 -05:00 [INF] Order Menu Choice 1
+2019-10-15 18:47:51.449 -05:00 [INF] Selected Customer: 1
+2019-10-15 18:47:52.705 -05:00 [INF] Selected Product: 1
+2019-10-15 18:47:54.573 -05:00 [INF] Selected Location [3]
+2019-10-15 18:47:57.881 -05:00 [INF] Selected Quantity: [4]
+2019-10-15 18:48:00.729 -05:00 [INF] Order Created
+2019-10-15 18:48:05.358 -05:00 [INF] Order Menu Choice 2
+2019-10-15 18:48:10.333 -05:00 [INF] Order Menu Choice 3
+2019-10-15 18:48:18.327 -05:00 [INF] Order Menu Choice 3
+2019-10-15 18:48:22.400 -05:00 [INF] Order Menu Choice 4
+2019-10-15 18:48:28.559 -05:00 [INF] Order Menu Choice 4
+2019-10-15 18:48:33.090 -05:00 [INF] Order Menu Choice 4
+2019-10-15 18:48:39.867 -05:00 [INF] Order Menu Choice 5
+2019-10-15 18:48:44.854 -05:00 [INF] Store Management Menu Choice: 3
+2019-10-15 18:50:20.432 -05:00 [INF] Main Menu Choice: 3

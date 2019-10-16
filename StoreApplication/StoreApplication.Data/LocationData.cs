@@ -85,6 +85,5 @@ namespace StoreApplication.Data
             return (int)foundName.Inventory1;
         }
 
-
     }
 }

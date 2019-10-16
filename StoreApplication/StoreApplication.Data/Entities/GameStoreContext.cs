@@ -22,13 +22,12 @@ namespace StoreApplication.Data.Entities
         public virtual DbSet<Orders> Orders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customers>(entity =>
             {
                 entity.HasKey(e => e.CustomerId)
-                    .HasName("PK__Customer__A4AE64D8996736AA");
+                    .HasName("PK__Customer__A4AE64D88B3F5A0F");
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
@@ -46,18 +45,18 @@ namespace StoreApplication.Data.Entities
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Inventory__Locat__278EDA44");
+                    .HasConstraintName("FK__Inventory__Locat__70099B30");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.Inventory)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__Inventory__Produ__2882FE7D");
+                    .HasConstraintName("FK__Inventory__Produ__70FDBF69");
             });
 
             modelBuilder.Entity<Locations>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Location__E7FEA49761DD256F");
+                    .HasName("PK__Location__E7FEA4976C127912");
 
                 entity.Property(e => e.City)
                     .HasMaxLength(50)
@@ -67,50 +66,51 @@ namespace StoreApplication.Data.Entities
             modelBuilder.Entity<OrderedProducts>(entity =>
             {
                 entity.HasKey(e => e.Opid)
-                    .HasName("PK__OrderedP__AE2CBEFEBDE46CE4");
+                    .HasName("PK__OrderedP__AE2CBEFEBFA91FE8");
 
                 entity.Property(e => e.Opid).HasColumnName("OPId");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__OrderedPr__Custo__21D600EE");
+                    .HasConstraintName("FK__OrderedPr__Custo__6A50C1DA");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__OrderedPr__Locat__24B26D99");
+                    .HasConstraintName("FK__OrderedPr__Locat__6D2D2E85");
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.OrderId)
-                    .HasConstraintName("FK__OrderedPr__Order__22CA2527");
+                    .HasConstraintName("FK__OrderedPr__Order__6B44E613");
 
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.OrderedProducts)
                     .HasForeignKey(d => d.ProductId)
-                    .HasConstraintName("FK__OrderedPr__Produ__23BE4960");
+                    .HasConstraintName("FK__OrderedPr__Produ__6C390A4C");
             });
 
             modelBuilder.Entity<Orders>(entity =>
             {
                 entity.HasKey(e => e.OrderId)
-                    .HasName("PK__Orders__C3905BCFF9ACD538");
+                    .HasName("PK__Orders__C3905BCF125ADD51");
 
                 entity.Property(e => e.OrderDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
                     .HasForeignKey(d => d.CustomerId)
-                    .HasConstraintName("FK__Orders__Customer__1EF99443");
+                    .HasConstraintName("FK__Orders__Customer__6774552F");
             });
 
             modelBuilder.Entity<Products>(entity =>
             {
                 entity.HasKey(e => e.ProductId)
-                    .HasName("PK__Products__B40CC6CDF1013252");
+                    .HasName("PK__Products__B40CC6CD5CC085EE");
 
                 entity.Property(e => e.ProductName)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
 

@@ -15,7 +15,7 @@ CREATE TABLE Customers (
 
 CREATE TABLE Products (
   ProductId INT PRIMARY KEY NOT NULL IDENTITY,
-  ProductName VARCHAR(50),
+  ProductName VARCHAR(50) NOT NULL,
   ProductType VARCHAR(50),
 );
 
@@ -49,8 +49,8 @@ CREATE TABLE Inventory (
 GO
 
 --INSERT INTO Customers (FirstName, LastName) VALUES
---('Angad', 'Minhas'),
---('Arthur', 'Morgan');
+--('Arthur', 'Morgan'),
+--('Angad', 'Minhas');
 
 INSERT INTO Locations (City) VALUES
 ('LA'),

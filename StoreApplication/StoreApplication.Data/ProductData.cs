@@ -131,5 +131,12 @@ namespace StoreApplication.Data
             return tempData;
         }
 
+        public void AddProductsDBTest(string testString)
+        {
+            List<int> storeLocationList = new List<int>();
+            List<int> storeInventoryList = new List<int>();
+            AddProductsDB("", "", Int32.Parse(""), 0, 0, storeLocationList, storeInventoryList);
+        }
+
     }
 }
