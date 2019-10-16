@@ -12,7 +12,7 @@ namespace StoreApplication.Data.Entities
 
         public int OrderId { get; set; }
         public int? CustomerId { get; set; }
-        public DateTime? OrderDate { get; set; }
+        public DateTime OrderDate { get; set; }
         public int? Quantity { get; set; }
 
         public virtual Customers Customer { get; set; }

@@ -105,10 +105,10 @@ namespace StoreApplication.Data
             using var context2 = new GameStoreContext(options);
             using var context3 = new GameStoreContext(options);
             using var context4 = new GameStoreContext(options);
-
+            
             foreach (Orders order in context.Orders)
             {
-                Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate} | Quantity: {order.Quantity} | ");
+                Console.Write($"OrderID: {order.OrderId} | Order Date: {order.OrderDate.Date.ToString("d")} | Quantity: {order.Quantity} | ");
                 var foundName = context2.Customers.FirstOrDefault(p => p.CustomerId == order.CustomerId);
                 Console.Write($"Customer Name: {foundName.FirstName + " " + foundName.LastName} | ");
                 var foundProduct = context3.OrderedProducts.FirstOrDefault(p => p.CustomerId == foundName.CustomerId && p.OrderId == order.OrderId);
